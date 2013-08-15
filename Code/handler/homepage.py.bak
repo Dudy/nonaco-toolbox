@@ -1,0 +1,69 @@
+from google.appengine.api import users
+import webapp2
+
+template="""
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Die PoMIS Toolbox</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width">
+		
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/default.css">
+		<script src="js/jquery/jquery.js"></script>
+    </head>
+    <body>
+		<!-- Mobile-friendly navbar adapted from example. -->
+        <!-- http://twitter.github.io/bootstrap/examples/starter-template.html -->
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="brand" href="#">Die PoMIS Toolbox</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                            <li class="active"><a href="#">Startseite</a></li>
+                            <li><a href="#about">&Uuml;ber uns</a></li>
+                            <li><a href="#contact">Kontact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+"""
+
+class Homepage(webapp2.RequestHandler):
+    def get2(self):
+        self.response.out.write(template)
+    def get(self):
+        user = users.get_current_user()
+        if user:
+            greeting = ('Welcome, %s! (<a href="%s">sign out</a>)' %
+                        (user.nickname(), users.create_logout_url('/')))
+        else:
+            greeting = ('<a href="%s">Sign in or register</a>.' %
+                        users.create_login_url('/'))
+
+        self.response.out.write('<html><body>%s</body></html>' % greeting)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

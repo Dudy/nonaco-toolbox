@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link type="text/css" rel="stylesheet" href="/static/main.css" />
+
+		<title>CS 253 Blog - by Dirk Podolak</title>
+	</head>
+
+	<body>
+		<a href="/blog" class="main-title">CS 253 Blog - by Dirk Podolak</a>
+		
+		<!--
+		<div class="login-area">
+			<a class="login-link" href="/blog/login">login</a>
+			|
+			<a class="login-link" href="/blog/signup">signup</a>
+		</div>
+		-->
+		
+		<div id="content">
+			{% for blogentry in blogentries %}
+			<div class="post">
+				<div class="post-heading">
+					<!--
+					<div class="post-title">
+						{{blogentry.subject}}
+					</div>
+					-->
+					<a href="/blog/{{blogentry.key().id()}}" class="post-title">
+						{{blogentry.subject}}
+					</a>
+
+					<div class="post-date">
+						{{blogentry.created}}
+					</div>
+				</div>
+
+				<div class="post-content">
+					{{blogentry.content}}
+				</div>
+			</div>
+			{% endfor %}
+			
+			<div class="age">
+				queried {{age}} seconds ago
+			</div>
+			
+			<form method="post">
+				<input type="submit" name="signup" value="sign up">
+				<input type="submit" name="login" value="log in">
+			</form>
+		</div>
+	</body>
+
+</html>

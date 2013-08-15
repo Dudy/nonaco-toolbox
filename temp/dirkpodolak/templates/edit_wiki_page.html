@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link type="text/css" rel="stylesheet" href="/static/main.css" />
+
+		<title>CS 253 Wiki - by Dirk Podolak</title>
+	</head>
+
+	<body>
+		<a href="/wiki" class="main-title">CS 253 Wiki - by Dirk Podolak</a>
+		
+		<div class="login-area">
+			<a class="login-link" href="/wiki/_history/{{wikientry.url}}">history</a>
+			&nbsp;
+			<a class="login-link" href="/wiki/logout">logout ({{username}})</a>
+		</div>
+		
+		<div id="content">
+			<form method="post">
+				<textarea name="content" cols="10" rows="10">{{wikientry.content}}</textarea>
+				<br>
+				<input type="submit" name="save" value="save">
+			</form>
+		</div>
+	</body>
+
+</html>

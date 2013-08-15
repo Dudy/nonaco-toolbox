@@ -1,0 +1,62 @@
+dirk.podolak@googlemail.com
+
+Unit 3 Homework:
+- Blog
+	- Startseite mit bis zu 10 Blogeinträgen, sortiert nach Einfügedatum, jüngste zuerst
+	- Editierseite (".../newpost") mit Überschrift "new post", subject <input type="text">, content <textarea> und <input type="submit">
+		- subject und content sind Pflichtfelder mit Fehlermeldung, falls was fehlt
+		- nach SUBMIT wird man auf eine Seite mit permalink weitergeleitet ".../blog/<id>"
+		- POST method
+	
+Unit 4 Homework:
+- Registration
+	- with cookie, see app cookietest
+	- use form from Unit 2 (is still in dirkpodolak.appspot.com :: main.py => unit 2)
+	- adjust: if username already exists, error "That user already exists."
+	- when signed in, welcome page doesn't have username in it => cookie (user_id|hash)
+	- with invalid cookie, redirect to signup page
+- Login
+	- Login Page: Username, Password, Submit
+	- URL: /login
+	- just like sign in, but no email, no repeated password
+	- redirects to welcome page (with cookie as before)
+	- invalid password or user does'n exist: "Invalid login"
+- Logout
+	- page: /logout
+	- redirect to signup page, clear cookie
+	
+Unit 5 homework
+- JSON Output
+	- output a list of dictionaries
+	- each distionary is one entry
+		{"content": <body>, "created": <date>, "last_modified": <date>, "subject": <subject>}
+	- <date> fields may be omitted, try it nonetheless, evtl. use strf funtion
+	- url for json = <url>.json, e.g. .../blog.json or ../blog/1.json
+
+Wiki (final exam):
+- from ASCIIChan: frontpage
+	- Welcome to the final!
+	- edit | history | [login|logout (<Name>)]
+	- when not logged in, a login and signin are possible
+- every page may by edited
+- any URL that doesn't exists (e.g. /wiki/newpage) directly opens an edit page for the then newly created page
+	- only when logged in
+	- URL: /wiki/_edit/newpage
+	- edit page has only logout
+	- save button: saves and redirects to /wiki/newpage
+- any existing URL show the page (of course)
+
+Wiki Bonus:
+- Add page history.
+- URL: "/wiki/_history/<url>"
+- LoginLink-class anchors: edit|view logout(<username>)
+- table of history entries
+	- col1: created date
+	- col2: first 100 characters of content
+	- col3: view button
+	- col4: edit button (<= nope, not yet, what should it do anyhow?)
+- every second line is light gray backgrounded (get css from somewhere)
+- click on "view":
+	- URL: "/wiki/<url>?v=<versionnumber>"
+	- just the show_wiki handler, but it has to load a historic version
+- the history view must escape, the show view not (it doesn't do at the moment)

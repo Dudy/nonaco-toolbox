@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link type="text/css" rel="stylesheet" href="/static/main.css" />
+
+		<title>CS 253 Wiki - by Dirk Podolak</title>
+	</head>
+
+	<body>
+		<a href="/wiki" class="main-title">CS 253 Wiki - by Dirk Podolak</a>
+		
+		<div class="login-area">
+			{% if username %}
+			<a class="login-link" href="/wiki/_edit/{{wikientry.url}}">edit</a>
+			|
+			<a class="login-link" href="/wiki/{{wikientry.url}}">view</a>
+			&nbsp;
+			<a class="login-link" href="/wiki/logout">logout ({{username}})</a>
+			{% else %}
+			<a class="login-link" href="/wiki/{{wikientry.url}}">view</a>
+			&nbsp;
+			<a class="login-link" href="/wiki/login">login</a>
+			|
+			<a class="login-link" href="/wiki/signup">signup</a>
+			{% endif %}
+		</div>
+		
+		<hr>
+		
+		<div id="history_list">
+			<form method="post">
+				<table class="history">
+				{% for entry in entries %}
+					<tr class="{{ loop.cycle('odd', 'even') }}">
+						<td>{{entry.created}}</td>
+						<td>{{entry.content}}</td>
+						
+						<td><a href="/wiki/{{entry.url}}?v={{ loop.revindex0 }}">view</a></td>
+						<!--<td><a href="">edit</a></td>-->
+					</tr>
+				{% endfor %}
+				<table>
+			</form>
+		</div>
+	</body>
+
+</html>

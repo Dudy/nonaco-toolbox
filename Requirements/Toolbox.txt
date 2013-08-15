@@ -1,0 +1,5 @@
+Version 1:
+- Benutzerverwaltung
+- "Facebook Wall"
+- Startseite mit allen Posts
+- Möglichkeit, Posts zu schreiben
