@@ -10,6 +10,4 @@ class Handler_homepage(jinja_worker.Handler_jinja_worker):
         else:
             self.render("homepage.html", username = None, url = users.create_login_url('/'))
 
-        #self.response.out.write('<html><body>%s</body></html>' % greeting)
-        #self.render("homepage.html", username = username)
         #self.redirect("/blog/signup")
