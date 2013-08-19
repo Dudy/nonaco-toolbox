@@ -69,14 +69,17 @@
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
               <li class="nav-header">Allgemeines</li>
-              <li class="active"><a href="#">Nachrichten</a></li>
-              <li><a href="#">Kalender</a></li>
-              <li><a href="#">Team</a></li>
-              <li><a href="#">Links</a></li>
+              <li id="nav_postings"><a href="#">Nachrichten</a></li>
+              <li id="nav_calendar"><a href="#">Kalender</a></li>
+              <li id="nav_team"><a href="#">Team</a></li>
+              <li id="nav_links"><a href="#">Links</a></li>
+              
               <li class="nav-header">Projekte</li>
-              <li><a href="#">Toolbox</a></li>
-              <li><a href="#">Notify.me</a></li>
-              <li><a href="#">SourcecodeBroker</a></li>
+              {%- if username != None -%}
+                {% for project in projects %}
+                  <li id="nav_{{project.title}}"><a href="/project/{{project.title}}">{{project.title}}</a></li>
+                {% endfor %}
+              {%- endif %}
             </ul>
           </div>
         </div>
