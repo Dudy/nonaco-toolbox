@@ -29,21 +29,21 @@ class Handler_homepage(jinja_worker.Handler_jinja_worker):
         if user:
             post = Post(parent = Post.post_db_key(), author_id = user.user_id(), content = self.request.get("content"))
             post.put()
-            self.redirect('/')
+        
+        self.redirect('/')
 
     def get_posts(self):
         user = users.get_current_user()
         post_list = []
         
-        if user:
+        post_query = Post.query(ancestor = Post.post_db_key()).order(-Post.created)
+        post_list = post_query.fetch(10)
+        
+        if user and len(post_list) == 0:
+            post = Post(parent = Post.post_db_key(), author_id = user.user_id(), content = 'Hallo Leute! Hier ist mal eine allererste Version des Kollaborationswerkzeugs, ich nenne das erst mal einfach nur <b>Toolbox</b>. In dieser ersten Version kann man allerdings noch nichts machen, ich arbeite dran ;-) Schaut euch die Seite zwei, drei mal am Tag an, ich will z&uuml;gig Ergebnisse liefern.')
+            post.put()
+            
             post_query = Post.query(ancestor = Post.post_db_key()).order(-Post.created)
             post_list = post_query.fetch(10)
-            
-            if len(post_list) == 0:
-                post = Post(parent = Post.post_db_key(), author_id = user.user_id(), content = 'Hallo Leute! Hier ist mal eine allererste Version des Kollaborationswerkzeugs, ich nenne das erst mal einfach nur <b>Toolbox</b>. In dieser ersten Version kann man allerdings noch nichts machen, ich arbeite dran ;-) Schaut euch die Seite zwei, drei mal am Tag an, ich will z&uuml;gig Ergebnisse liefern.')
-                post.put()
-                
-                post_query = Post.query(ancestor = Post.post_db_key()).order(-Post.created)
-                post_list = post_query.fetch(10)
         
         return post_list
