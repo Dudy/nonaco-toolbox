@@ -104,13 +104,6 @@
                     </form>
                 </div>
             </div>
-            {%- else %}
-            <div class="row-fluid">
-                <div class="input-append span12">
-                    <a href="{{url}}" class="navbar-link">Bitte einloggen.</a>
-                </div>
-            </div>
-            {%- endif %}
             
             <div class="row-fluid" id="list_of_posts">
                 {% for post in posts %}
@@ -121,7 +114,6 @@
                 {% endfor %}
             </div>
             
-            {%- if username != None -%}
             <div class="row-fluid">
                 <div class="span2 offset5">
                     <button id="load_next_button" type="button" class="btn btn-link text-center" data-loading-text="lade..." data-url="/json/next_posts/{{urlString}}">nächste 10 laden</button>
@@ -141,7 +133,14 @@
                     });
                 });
             </script>
-            {%- endif -%}
+            
+            {%- else %}
+            <div class="row-fluid">
+                <div class="span12">
+                    <a href="{{url}}" class="navbar-link">Bitte einloggen.</a>
+                </div>
+            </div>
+            {%- endif %}
         </div>
         
         <div class="span2">
