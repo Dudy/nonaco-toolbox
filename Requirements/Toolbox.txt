@@ -1,3 +1,4 @@
+---------------------------------------------------------------------------------------------------
 Version 1:
 - Benutzerverwaltung
 - "Facebook Wall"
@@ -10,5 +11,42 @@ Version 1:
 [x] letzte 10 Posts als Liste mitte unten
 [x] die "Hallo Leute" Message von mir wird der erste Post
 [x] ganz unten Knopf für (jeweils) nächste 10
+---------------------------------------------------------------------------------------------------
+Version 2:
+    - Projektverwaltung Teil 1
+    - erst mal alles plain text
 
+    [ ] Product Backlog
+        - Menge von Requirements
+        - eines pro Projekt
+    [ ] Requirement
+        - kurzer, prägnanter Titel
+        - lose Sammlung von Ideen zu einem Feature
+        - plain text
+        - ein Requirement kann aus mehreren User Stories bestehen
+        - auch Epic genannt
+    [ ] User Story
+        - kurzer, prägnanter Titel
+        - formal festgelegter Aufbau: "Als <Rolle> möchte ich <Ziel/Wunsch>, um <Nutzen>"
 
+    - Daten
+    [ ] Projekt[String: title]
+    [ ] Backlog[Integer: project_id]
+    [ ] Requirement[String: title, Integer: backlog_id]
+    [ ] UserStory[String: title, String: content, Integer: requirement_id]
+    
+    - GUI
+    [ ] weitere well namens "Tree" unterhalb der "Navigation"
+    [ ] in "Tree" ein Baum
+        - Wurzel ist "Backlog" (Projekt ist schon in "Navigation" ausgewählt)
+        - Knoten erster Ordnung sind "Requirements"
+        - Knoten zweiter Ordnung sind "User Stories"
+    [ ] im Contentbereich gibt's dazu jeweils Label/TextField für title
+    [ ] im Contentbereich gibt's dazu jeweils Label/TestArea für content
+    
+    - Logik
+    [ ] neues Requirement
+    [ ] Requirement löschen
+    [ ] neue User Story
+    [ ] User Story löschen
+---------------------------------------------------------------------------------------------------
