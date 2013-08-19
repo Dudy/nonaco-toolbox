@@ -3,3 +3,12 @@ Version 1:
 - "Facebook Wall"
 - Startseite mit allen Posts
 - Möglichkeit, Posts zu schreiben
+
+"Facebook Wall"
+[x] Datenhaltung
+[x] Testbox mitte oben für eigene Posts (nur wenn angemeldet)
+[x] letzte 10 Posts als Liste mitte unten
+[x] die "Hallo Leute" Message von mir wird der erste Post
+[x] ganz unten Knopf für (jeweils) nächste 10
+
+
