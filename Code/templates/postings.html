@@ -1,0 +1,45 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="input-append span12">
+            <form action="new_post" method="post">
+                <textarea name="content" class="span11" id="textarea" rows="6" placeholder="neuer Post"></textarea>
+                <button class="btn btn-primary">posten</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="row-fluid" id="list_of_posts">
+        {% for post in posts %}
+            <div class="well post">
+                <a href="#">{{post.get_GAE_User()}}</a>, {{post.created.strftime("%d.%m.%Y %H:%M:%S")}}
+                <p>{{post.content}}</p>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <div class="row-fluid">
+        <div class="span2 offset5">
+            <button id="load_next_button" type="button" class="btn btn-link text-center" data-loading-text="lade..." data-url="/json/next_posts/{{urlString}}">nächste 10 laden</button>
+        </div>
+    </div>
+    
+    <script>
+        $('#load_next_button').click(function(e) {
+            e.preventDefault();
+            var url = $(this).attr("data-url");
+            var button = this;
+            $.getJSON(url, function(result) {
+                for (var index in result.posts) {
+                    $('#list_of_posts').append('<div class="well post"><a href="#">' + result.posts[index].nickname + '</a>, ' + result.posts[index].created + '<p>' + result.posts[index].content + '</p></div>');
+                }
+                $(button).attr("data-url", '/json/next_posts/' + result.urlString);
+            });
+        });
+        
+        $(document).ready(function () {
+            $('#nav_postings').addClass('active');
+        });
+    </script>
+{% endblock %}
