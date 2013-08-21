@@ -1,4 +1,4 @@
-import jinja_worker
+﻿import jinja_worker
 import os, sys
 
 from google.appengine.api import users
@@ -16,3 +16,7 @@ class Handler_base(jinja_worker.Handler_jinja_worker):
             self.render("base.html", username = user.nickname(), url = users.create_logout_url('/'), projects = projects)
         else:
             self.render("base.html", username = None, url = users.create_login_url('/'), projects = None)
+
+class Handler_demo(jinja_worker.Handler_jinja_worker):
+    def get(self):
+        self.render("demo.html")

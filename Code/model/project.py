@@ -1,4 +1,4 @@
-from google.appengine.ext import ndb
+﻿from google.appengine.ext import ndb
 
 PROJECT_LIST_DB_KEY_NAME = 'project_list_db_key'
 

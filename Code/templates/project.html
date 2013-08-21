@@ -1,0 +1,56 @@
+﻿{% extends "base.html" %}
+
+{% block active_navigation %}nav_{{project.title}}{% endblock %}
+
+{% block head %}
+<style type="text/css">
+    .project-data-link {
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block second_sidebar %}
+    <div class="well sidebar-nav">
+        <ul class="nav nav-list" data-url="{{project.key.urlsafe()}}">
+            <li class="nav-header">Projekt</li>
+            
+            <li><a class="project-data-link" data-loading-text="lade..." data-url="overview">Komplettübersicht</a></li>
+            <li><a class="project-data-link" data-loading-text="lade..." data-url="requirements">Requirements</a></li>
+            <li><a class="project-data-link" data-loading-text="lade..." data-url="userstories">User Stories</a></li>
+            <li><a class="project-data-link" data-loading-text="lade..." data-url="tasks">Tasks</a></li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div id="content" class="row-fluid">
+        <div class="span12">
+            <h2>Projekt {{project.title}}</h2>
+        </div>
+    </div>
+    
+    <script>
+        $('.project-data-link').click(function(e) {
+            e.preventDefault();
+            
+            $('.project-data-link').parent().removeClass('active');
+            $(this).parent().addClass('active');
+            
+            //var url =
+            //    '/json/' + $(this).attr('data-url') + '/' +
+            //    $(this).parent().parent().attr('data-url');
+            var url =
+                '/json/' + $(this).attr('data-url') + '/?project=' +
+                $(this).parent().parent().attr('data-url');
+            
+            $.getJSON(url, function(result) {
+                $('#content').html(result.content);
+            });
+        });
+        
+        //$('.project-data-link').click(function () {
+        //    $(this)('loading');
+        //});
+    </script>
+{% endblock %}

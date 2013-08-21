@@ -37,9 +37,7 @@
                 $(button).attr("data-url", '/json/next_posts/' + result.urlString);
             });
         });
-        
-        $(document).ready(function () {
-            $('#nav_postings').addClass('active');
-        });
     </script>
 {% endblock %}
+
+{% block active_navigation %}nav_postings{% endblock %}

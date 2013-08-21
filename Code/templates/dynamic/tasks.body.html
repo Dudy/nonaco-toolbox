@@ -1,0 +1,31 @@
+﻿<div class="row-fluid">
+    <div class="span12">
+        <h2>Tasks im Projekt {{project.title}}</h2>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span12">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>User Story</th>
+                    <th>Titel</th>
+                    <th>Inhalt</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>{{task.id}}</td>
+                    <td>{{userstory_titles[task.key.id()]}}</td>
+                    <td>{{task.title}}</td>
+                    <td>{{task.content}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>

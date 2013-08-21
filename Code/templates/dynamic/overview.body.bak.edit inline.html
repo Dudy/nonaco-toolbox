@@ -1,0 +1,140 @@
+﻿<div class="row-fluid">
+    <div class="span12">
+        <h2>Übersicht im Projekt {{project.title}}</h2>
+    </div>
+</div>
+
+<!--
+<div class="row-fluid">
+    <div class="span12">
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th>Requirement</th>
+                <th>Titel</th>
+                <th>Inhalt</th>
+            </tr>
+            
+            {% for userstory in userstories %}
+            <tr>
+                <td>{{requirement_titles[userstory.key.id()]}}</td>
+                <td>{{userstory.title}}</td>
+                <td>{{userstory.content}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+-->
+
+<!--
+<link class="cssdeck" rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" class="cssdeck">
+-->
+
+<!-- <div class="well" style="width:300px; padding: 8px 0;"> -->
+<div class="row-fluid">
+    <!-- <div style="overflow-y: scroll; overflow-x: hidden; height: 500px;"> -->
+    <!-- <div class="span12" style="border: 1px solid #ddd; border-radius: 4px;"> -->
+    <div class="well span12" style="background: white;">
+        <ul class="nav nav-list">
+            <li><label class="tree-toggler nav-header">Requirement 1: Lesezeichen</label>
+                <ul class="nav nav-list tree">
+                    <li>
+                        <form class="form-inline">
+                            <input type="text" placeholder="Titel" value="Lesezeichen">
+                            <input type="text" placeholder="Inhalt" value="Jeder findet ab und zu mal einen nützlichen Link. Es soll eine Möglichkeit geben, eine URL zu speichern. Dazu soll man eine kleine Notiz speichern können, z.B. "Vorlage für Design" oder ähnliches. Die gesammelten Links kann man sich in einer Liste ansehen, zu der es im Navigationsbaum den Punkt "Links" gibt. Später soll es Kategorien geben.">
+                            <!--
+                            <label class="checkbox">
+                                <input type="checkbox"> Remember me
+                            </label>
+                            -->
+                            <button type="submit" class="btn">Speichern</button>
+                        </form>
+                    </li>
+                    
+                    <li><label class="tree-toggler nav-header">Header 1.1</label>
+                        <ul class="nav nav-list tree">
+                            <li><a href="#">Link</a></li>
+                            <li><a href="#">Link</a></li>
+                            <li><label class="tree-toggler nav-header">Header 1.1.1</label>
+                                <ul class="nav nav-list tree">
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <li><label class="tree-toggler nav-header">User Story 1.2</label>
+                        <ul class="nav nav-list tree">
+                            <li><a href="#">Eintrag im Navigationsbaum</a></li>
+                            <li><label class="tree-toggler nav-header">Task 1.2.1</label>
+                                <ul class="nav nav-list tree">
+                                    <li><a href="#">:: neuen Task anlegen ::</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <li><a href="#">Link</a></li>
+                    <li><label class="tree-toggler nav-header">Header 1.1</label>
+                        <ul class="nav nav-list tree">
+                            <li><a href="#">Link</a></li>
+                            <li><a href="#">Link</a></li>
+                            <li><label class="tree-toggler nav-header">Header 1.1.1</label>
+                                <ul class="nav nav-list tree">
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="divider"></li>
+            <li><label class="tree-toggler nav-header">Header 2</label>
+                <ul class="nav nav-list tree">
+                    <li><a href="#">Link</a></li>
+                    <li><a href="#">Link</a></li>
+                    <li><label class="tree-toggler nav-header">Header 2.1</label>
+                        <ul class="nav nav-list tree">
+                            <li><a href="#">Link</a></li>
+                            <li><a href="#">Link</a></li>
+                            <li><label class="tree-toggler nav-header">Header 2.1.1</label>
+                                <ul class="nav nav-list tree">
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><label class="tree-toggler nav-header">Header 2.2</label>
+                        <ul class="nav nav-list tree">
+                            <li><a href="#">Link</a></li>
+                            <li><a href="#">Link</a></li>
+                            <li><label class="tree-toggler nav-header">Header 2.2.1</label>
+                                <ul class="nav nav-list tree">
+                                    <li><a href="#">Link</a></li>
+                                    <li><a href="#">Link</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!--
+<script class="cssdeck" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script class="cssdeck" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+-->
+
+<script>
+$(document).ready(function () {
+	$('label.tree-toggler').click(function () {
+		$(this).parent().children('ul.tree').toggle(100);
+	});
+});
+</script>

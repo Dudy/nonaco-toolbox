@@ -1,0 +1,41 @@
+﻿<div class="row-fluid">
+    <div class="span12">
+        <h2>Requirements im Projekt {{project.title}}</h2>
+    </div>
+</div>
+
+<div class="row-fluid">
+    <div class="span12">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Titel</th>
+                    <th>Inhalt</th>
+                </tr>
+            </thead>
+            
+            <tbody data-urlsafe="{{project.key.urlsafe()}}">
+                {% for requirement in requirements %}
+                <tr>
+                    <td data-type="id">{{requirement.id}}</td>
+                    <td data-type="title">{{requirement.title}}</td>
+                    <td data-type="content">{{requirement.content}}</td>
+                </tr>
+                {% endfor %}
+            <tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+$('.table > tbody > tr').click(function() {
+    $(this).parent().attr('data-urlsafe');
+    url = '/project/requirement?urlsafe=' +
+        $(this).parent().attr('data-urlsafe') +
+        '&id=' + $(this).find('td[data-type="id"]').text();
+    $.getJSON(url, function(result) {
+        $('#content').html(result.html);
+    });
+});
+</script>

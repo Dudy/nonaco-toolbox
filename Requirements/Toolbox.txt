@@ -30,10 +30,10 @@ Version 2:
         - formal festgelegter Aufbau: "Als <Rolle> möchte ich <Ziel/Wunsch>, um <Nutzen>"
 
     - Daten
-    [ ] Projekt[String: title]
-    [ ] Backlog[Integer: project_id]
-    [ ] Requirement[String: title, Integer: backlog_id]
-    [ ] UserStory[String: title, String: content, Integer: requirement_id]
+    [x] Projekt[String: title]
+    [x] Backlog[Projekt: parent]
+    [x] Requirement[Integer: author_id, String: title, Backlog: parent]
+    [x] UserStory[Integer: author_id, String: title, String: content, Requirement: parent]
     
     - GUI
     [ ] weitere well namens "Tree" unterhalb der "Navigation"
@@ -50,3 +50,10 @@ Version 2:
     [ ] neue User Story
     [ ] User Story löschen
 ---------------------------------------------------------------------------------------------------
+Refactoring:
+[ ] Navigationsbox muß mit Tempaltes anders gemacht werden, sonst muß jeder Controller separat immer alle Projekte übergeben
+[ ] Umlaute funktionieren nicht
+[ ] alle Links (<a>), die neue Seiten laden, müssen auf Ajax umgestellt werden
+[ ] Benennungen prüfen, z.B. könnten alle Handler "Handler" heißen, da sie ohnehin vom Module prefixed werden und ein Module immer nur einen Handler hat
+[ ] Umstellung auf Bootstrap 3
+[ ] alle Models haben dieselben Attribute, nur andere all() Methode, lagere Attribute in Vaterklasse aus

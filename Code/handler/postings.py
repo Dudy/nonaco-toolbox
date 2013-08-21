@@ -1,4 +1,4 @@
-import json
+﻿import json
 import datetime
 import jinja_worker
 import os, sys
@@ -40,7 +40,7 @@ class Handler_postings(jinja_worker.Handler_jinja_worker):
         post_list = post_query.fetch(10)
         
         if user and len(post_list) == 0:
-            post = Post(parent = Post.post_db_key(), author_id = user.user_id(), content = 'Hallo Leute! Hier ist mal eine allererste Version des Kollaborationswerkzeugs, ich nenne das erst mal einfach nur <b>Toolbox</b>. In dieser ersten Version kann man allerdings noch nichts machen, ich arbeite dran ;-) Schaut euch die Seite zwei, drei mal am Tag an, ich will z&uuml;gig Ergebnisse liefern.')
+            post = Post(parent = Post.post_db_key(), author_id = user.user_id(), content = 'Hallo Leute! Hier ist mal eine allererste Version des Kollaborationswerkzeugs, ich nenne das erst mal einfach nur <b>Toolbox</b>. In dieser ersten Version kann man allerdings noch nichts machen, ich arbeite dran ;-) Schaut euch die Seite zwei, drei mal am Tag an, ich will zügig Ergebnisse liefern.')
             post.put()
             
             post_query = Post.query(ancestor = Post.post_db_key()).order(-Post.created)

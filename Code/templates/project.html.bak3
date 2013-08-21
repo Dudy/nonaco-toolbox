@@ -1,0 +1,77 @@
+﻿{% extends "base.html" %}
+
+{% block active_navigation %}nav_{{project.title}}{% endblock %}
+
+{% block second_sidebar %}
+    <div class="well sidebar-nav">
+        <ul class="nav nav-list">
+            <li class="nav-header">Projekt</li>
+            <li id="nav_overview"><a href="#" data-loading-text="lade..." data-url="/todo">Komplettuebersicht</a></li>
+            <li id="nav_requirements"><a href="#" data-loading-text="lade..." data-url="/json/requirements/{{project.key.urlsafe()}}">Requirements</a></li>
+            <li id="nav_userstories"><a data-loading-text="lade..." data-url="/todo">User Stories</a></li>
+            <li id="nav_tasks"><a data-loading-text="lade..." data-url="/todo">Tasks</a></li>
+            
+            <li class="nav-header">zweiter Block</li>
+            <li><a id="btn_b1" data-loading-text="lade..." data-url="/todo">Aufgabe 1</a></li>
+            <li><a id="btn_b2" data-loading-text="lade..." data-url="/todo">Aufgabe 2</a></li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="span12">
+            <h2>Requirements im Projekt {{project.title}}</h2>
+        </div>
+    </div>
+    
+    <div class="row-fluid">
+        <div class="span12">
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th>Titel</th>
+                    <th>Inhalt</th>
+                </tr>
+                <tr>
+                    <td>In-App Chat</td>
+                    <td>Eine Liste soll alle Teammitglieder mit Online Status anzeigen. Bei Klick auf den Namen eines Teammitglieds, das online ist, soll ein Chatfenster aufgehen.</td>
+                </tr>
+                <tr>
+                    <td>Lesezeichen</td>
+                    <td>Jeder findet ab und zu mal einen nuetzlichen Link. Es soll eine Moeglichkeit geben, eine URL zu speichern. Dazu soll man eine kleine Notiz speichern koennen, z.B. "Vorlage fuer Design" oder aehnliches. Die gesammelten Links kann man sich in einer Liste ansehen, zu der es im Navigationsbaum den Punkt "Links" gibt. Spaeter soll es Kategorien geben.</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        $('#nav_requirements').click(function(e) {
+            e.preventDefault();
+            $('#nav_overview').removeClass('active');
+            $('#nav_requirements').addClass('active');
+            $('#nav_userstories').removeClass('active');
+            $('#nav_tasks').removeClass('active');
+            var url = $(this).children('a').attr("data-url");
+            $.getJSON(url, function(result) {
+                for (var index in result.requirements) {
+                    //$('#list_of_posts').append('<div class="well post"><a href="#">' + result.posts[index].nickname + '</a>, ' + result.posts[index].created + '<p>' + result.posts[index].content + '</p></div>');
+                    alert("requirement: " + result.requirements[index]);
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+
+
+
+
+
+<!--
+                <li><label class="tree-toggle nav-header">[requirement] In-App Chat</label>
+                    <ul class="nav nav-list tree">
+                        <li><a href="#">us :: Als Benutzer moechte ich rechts eine Liste aller Teammitglieder, um mit einem Blick zu sehen, wer online ist und wer nicht.</a></li>
+                        <li><a href="#">us :: Als Benutzer moechte ich in der Liste aller Teammitglieder rechts die Namen als Link, um mit einem Mausklick ein Chatfenster zu diesem Benutzer oeffnen zu koennen.</a></li>
+                    </ul>
+                </li>
+-->

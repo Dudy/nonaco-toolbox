@@ -1,0 +1,35 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+    <div class="row-fluid">
+        <div class="input-append span12">
+            <h2>Titel: {{project.title}}</h2>
+        </div>
+    </div>
+{% endblock %}
+
+{% block second_sidebar %}
+    <div class="well sidebar-nav">
+        <ul class="nav nav-list">
+            <li class="nav-toggle"><button id="btn_a1" type="button" class="nav-header btn btn-link" data-loading-text="lade..." data-url="/todo">In-App Chat</button></li>
+            <ul class="nav nav-list tree">
+                <li><button id="btn_a2" type="button" class="btn btn-link" data-loading-text="lade..." data-url="/todo">Liste der Teammitglieder</button></li>
+                <li><button id="btn_a2" type="button" class="btn btn-link" data-loading-text="lade..." data-url="/todo">Links in Teamliste</button></li>
+            </ul>
+
+            <li class="divider"></li>
+            
+            <li class="nav-header">Projekte</li>
+            {%- if username != None -%}
+                {%- if projects != None -%}
+                    {% for project in projects %}
+                        <li id="nav_{{project.title}}"><a href="/project/{{project.key.urlsafe()}}">{{project.title}}</a></li>
+                    {% endfor %}
+                {%- endif %}
+            {%- endif %}
+        </ul>
+    </div>
+{% endblock %}
+
+{% block active_navigation %}nav_{{project.title}}{% endblock %}
+

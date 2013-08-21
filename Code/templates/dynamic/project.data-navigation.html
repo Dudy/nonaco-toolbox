@@ -1,0 +1,39 @@
+﻿<style type="text/css">
+    .project-data-link {
+        cursor: pointer;
+    }
+</style>
+
+<div class="well sidebar-nav">
+    <ul class="nav nav-list" data-url="{{project.key.urlsafe()}}">
+        <li class="nav-header">Projekt</li>
+        
+        <li><a class="project-data-link" data-loading-text="lade..." data-url="overview">Komplettübersicht</a></li>
+        <li><a class="project-data-link" data-loading-text="lade..." data-url="requirements">Requirements</a></li>
+        <li><a class="project-data-link" data-loading-text="lade..." data-url="userstories">User Stories</a></li>
+        <li><a class="project-data-link" data-loading-text="lade..." data-url="tasks">Tasks</a></li>
+    </ul>
+</div>
+
+<script>
+    $('.project-data-link').click(function(e) {
+        e.preventDefault();
+        
+        $('.project-data-link').parent().removeClass('active');
+        $(this).parent().addClass('active');
+        
+        $('#content').empty();
+        
+        var url =
+            '/project/' + $(this).attr('data-url') + '?urlsafe=' +
+            $(this).parent().parent().attr('data-url');
+        
+        $.getJSON(url, function(result) {
+            $('#content').html(result.content);
+        });
+    });
+    
+    //$('.project-data-link').click(function () {
+    //    $(this)('loading');
+    //});
+</script>

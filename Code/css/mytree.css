@@ -1,0 +1,115 @@
+﻿.css-mytreeview ul,
+.css-mytreeview li
+{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+ 
+.css-mytreeview input
+{
+    position: absolute;
+    opacity: 0;
+}
+ 
+.css-mytreeview
+{
+    font: normal 11px "Segoe UI", Arial, Sans-serif;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+ 
+.css-mytreeview a
+{
+    color: #00f;
+    text-decoration: none;
+}
+ 
+.css-mytreeview a:hover
+{
+    text-decoration: underline;
+}
+ 
+.css-mytreeview input + i + ul
+{
+    margin: 0 0 0 22px;
+}
+ 
+.css-mytreeview input ~ ul
+{
+    display: none;
+}
+ 
+.css-mytreeview i,
+.css-mytreeview i::before
+{
+    cursor: pointer;
+}
+ 
+.css-mytreeview input:disabled + i
+{
+    cursor: default;
+    opacity: .6;
+}
+ 
+.css-mytreeview input:checked:not(:disabled) ~ ul
+{
+    display: block;
+}
+ 
+.css-mytreeview i,
+.css-mytreeview i::before
+{
+    background: url("../pages/css3-treeview/example/icons.png") no-repeat;
+}
+ 
+.css-mytreeview i,
+.css-mytreeview a,
+.css-mytreeview i::before
+{
+    display: inline-block;
+    height: 16px;
+    line-height: 16px;
+    vertical-align: middle;
+}
+ 
+.css-mytreeview i
+{
+    background-position: 18px 0;
+}
+ 
+.css-mytreeview i::before
+{
+    content: "";
+    width: 16px;
+    margin: 0 22px 0 0;
+    vertical-align: middle;
+    background-position: 0 -32px;
+}
+ 
+.css-mytreeview input:checked + i::before
+{
+    background-position: 0 -16px;
+}
+ 
+/* webkit adjacent element selector bugfix */
+@media screen and (-webkit-min-device-pixel-ratio:0)
+{
+    .css-mytreeview 
+    {
+        -webkit-animation: webkit-adjacent-element-selector-bugfix infinite 1s;
+    }
+ 
+    @-webkit-keyframes webkit-adjacent-element-selector-bugfix 
+    {
+        from 
+        { 
+            padding: 0;
+        } 
+        to 
+        { 
+            padding: 0;
+        }
+    }
+}
