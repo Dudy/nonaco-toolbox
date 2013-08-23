@@ -1,70 +1,104 @@
-﻿{% extends "base.html" %}
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Toolbox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-{% block head %}
-    <link rel="stylesheet" href="/css/mytree.css">
-{% endblock %}
+    <script src="/js/jquery/jquery.js"></script>
+    <script src="/bs/js/bootstrap.js"></script>
 
-{% block content %}
-<div class="container">
-<div class="row"><h1>Bootstrap Tree Menu Example</h1></div>
-</div>
-{% endblock %}
+    <link rel="stylesheet" href="/css/default.css">    
+    <link rel="stylesheet" href="/bs/css/bootstrap.css">
+    <link rel="stylesheet" href="/resources/fonts/font-awesome/css/font-awesome.css">
+    
+    
+    
+  </head>
 
-{% block second_sidebar %}
-    <div class="well sidebar-nav">
-        <div>
-            <ul class="nav nav-list">
-                <li><label class="tree-toggle nav-header">Bootstrap</label>
-                    <ul class="nav nav-list tree">
-                        <li><a href="#">JavaScript</a></li>
-                        <li><a href="#">CSS</a></li>
-                        <li><label class="tree-toggle nav-header">Buttons</label>
-                            <ul class="nav nav-list tree">
-                                <li><a href="#">Colors</a></li>
-                                <li><a href="#">Sizes</a></li>
-                                <li><label class="tree-toggle nav-header">Forms</label>
-                                    <ul class="nav nav-list tree">
-                                        <li><a href="#">Horizontal</a></li>
-                                        <li><a href="#">Vertical</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li class="divider"></li>
-                <li><label class="tree-toggle nav-header">Responsive</label>
-                    <ul class="nav nav-list tree">
-                        <li><a href="#">Overview</a></li>
-                        <li><a href="#">CSS</a></li>
-                        <li><label class="tree-toggle nav-header">Media Queries</label>
-                            <ul class="nav nav-list tree">
-                                <li><a href="#">Text</a></li>
-                                <li><a href="#">Images</a></li>
-                                <li><label class="tree-toggle nav-header">Mobile Devices</label>
-                                    <ul class="nav nav-list tree">
-                                        <li><a href="#">iPhone</a></li>
-                                        <li><a href="#">Samsung</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><label class="tree-toggle nav-header">Coding</label>
-                            <ul class="nav nav-list tree">
-                                <li><a href="#">JavaScript</a></li>
-                                <li><a href="#">jQuery</a></li>
-                                <li><label class="tree-toggle nav-header">HTML DOM</label>
-                                    <ul class="nav nav-list tree">
-                                        <li><a href="#">DOM Elements</a></li>
-                                        <li><a href="#">Recursive</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+  <body>
+
+    <div class="container">
+<!-- Start oberer Navigationsteil -->
+    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Toolbox</a>
         </div>
+        <div class="collapse navbar-collapse">
+          <p class="navbar-text pull-right">Logged in as <a href="#" class="navbar-link">test@example.com</a> (<a href="/_ah/login?continue=http%3A//localhost%3A12080/&amp;action=logout" class="navbar-link">Logout</a>)
+          </p>
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
-{% endblock %}
+<!-- Ende oberer Navigationsteil -->
+﻿<!-- Start linker Navigationsteil -->
+      <div class="col-lg-2 sidebar well" id="navigation" role="navigation">
+        <ul class="nav nav-pills nav-stacked">
+            <li class="nav-header">Allgemeines</li>
+            <li id="nav_postings"><a href="/postings.html">Nachrichten</a></li>
+            <li id="nav_calendar"><a href="#">Kalender</a></li>
+            <li id="nav_team"><a href="#">Team</a></li>
+            <li id="nav_links"><a href="#">Links</a></li>
+            
+            <li class="nav-header">Projekte</li>
+                        <li><a class="project-link" href="#" data-project-url="ahJkZXZ-bm9uYWNvLXRvb2xib3hyNAsSB1Byb2plY3QiE3Byb2plY3RfbGlzdF9kYl9rZXkMCxIHUHJvamVjdBiAgICAgMCfCAw">Notify.me</a></li>
+                    
+                        <li><a class="project-link" href="#" data-project-url="ahJkZXZ-bm9uYWNvLXRvb2xib3hyNAsSB1Byb2plY3QiE3Byb2plY3RfbGlzdF9kYl9rZXkMCxIHUHJvamVjdBiAgICAgMDfCAw">SourcecodeBroker</a></li>
+                    
+                        <li><a class="project-link" href="#" data-project-url="ahJkZXZ-bm9uYWNvLXRvb2xib3hyNAsSB1Byb2plY3QiE3Byb2plY3RfbGlzdF9kYl9rZXkMCxIHUHJvamVjdBiAgICAgMDvCAw">Toolbox</a></li>
+                    
+        </ul>
+      </div>
 
+      
+      <div id="second-sidebar"></div>
+      
+<!-- Ende linker Navigationsteil -->
+      <div class="col-lg-8">
+          
+          <h2>Willkommen.</h2>
+          
+
+      </div>
+
+﻿<!-- Start rechter Navigationsteil -->
+      <div class="col-lg-2 sidebar well">
+        <ul class="nav nav-pills nav-stacked">
+          <li class="nav-header">Team</li>
+          <li><a href="#">Björn</a></li>
+          <li><a href="#">Christian</a></li>
+          <li><a href="#">Dirk</a></li>
+          <li><a href="#">Franziska</a></li>
+          <li><a href="#">Lars</a></li>
+          <li><a href="#">Marcel</a></li>
+          <li><a href="#">Nadia</a></li>
+          <li><a href="#">Reinhold</a></li>
+          <li><a href="#">Robert</a></li>
+          <li><a href="#">Tobias</a></li>
+        </ul>
+      </div>
+<!-- Ende rechter Navigationsteil -->
+
+      <hr>
+
+      <footer>
+        <p>&copy; No Name Company (NoNaCo) 2013</p>
+      </footer>
+
+    </div>
+
+  </body>
+</html>

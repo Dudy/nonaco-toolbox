@@ -1,0 +1,67 @@
+﻿    <form action="/new_post" role="new-message">
+      <div class="form-group">
+        <label for="post">Nachricht</label>
+        <textarea name="content" class="form-control" rows="3" placeholder="neue Nachricht"></textarea>
+        <button class="btn btn-primary">posten</button>
+      </div>
+    </form>
+
+    <div class="container">
+      <div class="row" id="list_of_posts">
+        {% for post in posts %}
+          <div class="well post">
+            <a href="#">{{post.author}}</a>, {{post.created.strftime("%d.%m.%Y %H:%M:%S")}}
+            <p>{{post.content}}</p>
+          </div>
+        {% endfor %}
+      </div>
+    
+      <div class="row">
+        <div class="span2 offset5">
+          <button id="load_next_button" type="button" class="btn btn-link text-center" data-loading-text="lade..." data-url="/json/next_posts/{{urlString}}">nächste 10 laden</button>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      $('form[role="new-message"]').submit(function(e){
+        /* stop form from submitting normally */
+        e.preventDefault(); 
+
+        /* get some values from elements on the page: */
+        var $form = $(this),
+            $content_field = $form.find('textarea[name="content"]'),
+            content = $content_field.val(),
+            url = $form.attr('action');
+        
+        /* don't allow empty posts */
+        if (content.length > 0) {
+          /* Send the data using post */
+          var posting = $.post(url, { content: content } );
+         
+          /* Handle server response */
+          posting.done(function(data) {
+            var obj = JSON.parse(data);
+            if (obj.success) {
+              $content_field.val('');
+              $('#list_of_posts').prepend('<div class="well post" style="display: none;"><a href="#">' + obj.user + '</a>, ' + obj.created + '<p>' + obj.content + '</p></div>');
+              $('#list_of_posts div:first-child').slideDown(100);
+            } else {
+              alert("Fehler: Nachricht konnte nicht gespeichert werden!\n" + data);
+            }
+          });
+        }
+      });
+      
+      $('#load_next_button').click(function(e) {
+        e.preventDefault();
+        var url = $(this).attr("data-url");
+        var button = this;
+        $.getJSON(url, function(result) {
+          for (var index in result.posts) {
+            $('#list_of_posts').append('<div class="well post"><a href="#">' + result.posts[index].nickname + '</a>, ' + result.posts[index].created + '<p>' + result.posts[index].content + '</p></div>');
+          }
+          $(button).attr("data-url", '/json/next_posts/' + result.urlString);
+        });
+      });
+  </script>

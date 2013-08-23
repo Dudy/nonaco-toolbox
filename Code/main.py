@@ -22,8 +22,11 @@ app = webapp2.WSGIApplication([
     ('/', base.Handler_base),
     
     ('/demo.html', base.Handler_demo),
+    ('/demo2.html', base.Handler_demo2),
     
     # the API
+    ('/postings', postings.Handler_postings),
+    
     (r'/json/next_posts/(.*)', lazy_loader.Handler_lazy_loader),
     
     (r'/json/overview/(.*)', overview_handler.Handler_overview),

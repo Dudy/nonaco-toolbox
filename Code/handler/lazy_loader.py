@@ -24,8 +24,7 @@ class Handler_lazy_loader(jinja_worker.Handler_jinja_worker):
             
             posts = []
             for post in post_list:
-                user = users.User(_user_id = post.author_id)
-                dict = { 'nickname': user.nickname(), 'content': post.content, 'created': post.created.strftime("%d.%m.%Y %H:%M:%S") }
+                dict = { 'nickname': post.author.nickname(), 'content': post.content, 'created': post.created.strftime("%d.%m.%Y %H:%M:%S") }
                 posts.append(dict)
             post_dict = { 'urlString': urlString, 'posts': posts }
             

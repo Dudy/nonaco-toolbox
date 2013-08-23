@@ -108,7 +108,7 @@
             <div class="row-fluid" id="list_of_posts">
                 {% for post in posts %}
                 <div class="well post">
-                    <a href="#">{{post.get_GAE_User()}}</a>, {{post.created.strftime("%d.%m.%Y %H:%M:%S")}}
+                    <a href="#">{{post.author}}</a>, {{post.created.strftime("%d.%m.%Y %H:%M:%S")}}
                     <p>{{post.content}}</p>
                 </div>
                 {% endfor %}

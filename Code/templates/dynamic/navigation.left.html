@@ -1,0 +1,45 @@
+﻿<!-- Start linker Navigationsteil -->
+      <div class="col-lg-2 sidebar well" id="main-navigation" role="navigation">
+        <ul class="nav nav-pills nav-stacked">
+            <li class="nav-header">Allgemeines</li>
+            <li><a href="#" data-url="postings">Nachrichten</a></li>
+            <li><a href="#" data-url="calendar">Kalender</a></li>
+            <li><a href="#" data-url="team">Team</a></li>
+            <li><a href="#" data-url="links">Links</a></li>
+            
+            <li class="nav-header">Projekte</li>
+            {%- if username != None -%}
+                {%- if projects != None -%}
+                    {% for project in projects %}
+                        <li><a href="#" data-project-url="{{project.key.urlsafe()}}">{{project.title}}</a></li>
+                    {% endfor %}
+                {%- endif %}
+            {%- endif %}
+        </ul>
+      </div>
+
+      {% block second_sidebar %}
+      <div id="second-sidebar"></div>
+      {% endblock %}
+      
+      <script>
+        $('#main-navigation > ul > li > a').click(function(e) {
+          /* stop link from redirecting normally */
+          e.preventDefault();
+          
+          /* some new content will eventually come */
+          $('#content').empty();
+          
+          /* set active caption on new link */
+          $('#main-navigation > ul > li').removeClass('active');
+          $(this).parent().addClass('active');
+          
+          /* get new content and paste into page */
+          var url = '/' + $(this).attr("data-url");
+          var button = this;
+          $.getJSON(url, function(result) {
+              $('#content').html(result.content);
+          });
+        });
+      </script>
+<!-- Ende linker Navigationsteil -->

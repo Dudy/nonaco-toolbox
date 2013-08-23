@@ -1,3 +1,33 @@
 ﻿body {
     background: #e5efff;
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.well {
+    padding: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+.post {
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.container {
+    max-width: 5000px !important;
+}
+
+.nav-stacked > li.nav-header {
+    padding: 3px 5px;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 20px;
+    color: #999999;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+}
+
+.nav-stacked > li > a {
+    padding: 3px 10px !important;
 }
