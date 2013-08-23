@@ -20,7 +20,7 @@ class Handler_postings(jinja_worker.Handler_jinja_worker):
             urlString = posts[len(posts) - 1].key.urlsafe()
         
         if user:
-            html_text = self.render_str("dynamic/postings.body.html", posts = posts)
+            html_text = self.render_str("dynamic/postings.body.html", posts = posts, urlString = urlString)
             requirement_dict = { 'content': html_text }
             self.response.write(json.dumps(requirement_dict))
         else:
@@ -46,9 +46,6 @@ class Handler_postings(jinja_worker.Handler_jinja_worker):
         post_list = post_query.fetch(10)
         
         if user and len(post_list) == 0:
-            #post = Post(parent = Post.post_db_key(), author = user, content = 'Hallo Leute! Hier ist mal eine allererste Version des Kollaborationswerkzeugs, ich nenne das erst mal einfach nur <b>Toolbox</b>. In dieser ersten Version kann man allerdings noch nichts machen, ich arbeite dran ;-) Schaut euch die Seite zwei, drei mal am Tag an, ich will zügig Ergebnisse liefern.')
-            #post.put()
-            
             post = Post(parent = Post.post_db_key(), author = user, content = 'Bugreport #2: Leere Posts sind möglich, siehe meinen Vorherigen', created = datetime.datetime(year = 2013, month = 8, day = 20, hour = 18, minute = 51, second = 38))
             post.put()
             
