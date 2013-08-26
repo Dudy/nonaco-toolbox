@@ -37,3 +37,18 @@
   ancestor: yes
   properties:
   - name: title
+
+- kind: Requirement
+  ancestor: yes
+  properties:
+  - name: id
+
+- kind: Task
+  ancestor: yes
+  properties:
+  - name: id
+
+- kind: UserStory
+  ancestor: yes
+  properties:
+  - name: id

@@ -1,13 +1,13 @@
-﻿<h2>Requirement</h2>
+﻿<h2>User Story</h2>
 
-<form action="/requirement/{{requirement.id}}" data-urlsafe="{{project.key.urlsafe()}}" role="edit-requirement">
+<form action="/userstory/{{userstory.id}}" data-urlsafe="{{project.key.urlsafe()}}" role="edit-userstory">
   <div class="form-group">
     <label for="id">ID</label>
-    <input name="id" type="text" class="form-control" placeholder="ID" value="{{requirement.id}}">
+    <input name="id" type="text" class="form-control" placeholder="ID" value="{{userstory.id}}">
     <label for="title">Titel</label>
-    <input name="title" type="text" class="form-control" placeholder="Titel" value="{{requirement.title}}">
+    <input name="title" type="text" class="form-control" placeholder="Titel" value="{{userstory.title}}">
     <label for="content">Inhalt</label>
-    <textarea name="content" class="form-control" rows="3" placeholder="Inhalt">{{requirement.content}}</textarea>
+    <textarea name="content" class="form-control" rows="3" placeholder="Inhalt">{{userstory.content}}</textarea>
   </div>
   <div class="form-group">
     <button class="btn btn-primary">speichern</button>
@@ -16,7 +16,7 @@
 </form>
 
 <script>
-  $('form[role="edit-requirement"]').submit(function(e){
+  $('form[role="edit-userstory"]').submit(function(e){
     /* stop form from submitting normally */
     e.preventDefault();
 

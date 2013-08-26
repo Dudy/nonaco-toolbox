@@ -1,0 +1,98 @@
+﻿<div class="container">
+  <div class="page-header">
+    <h3>Übersicht im Projekt {{project.title}}</h3>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row well project-overview">
+    <ul class="nav nav-list">
+      <li><label class="tree-toggler nav-header">1 Requirement</label>
+        <ul class="nav nav-list tree">
+          <li><a href="#" data-toggle="show" title="Jeder findet ab und zu mal einen nützlichen Link. Es soll eine Möglichkeit geben, eine URL zu speichern. Dazu soll man eine kleine Notiz speichern können, z.B. \"Vorlage für Design\" oder ähnliches. Die gesammelten Links kann man sich in einer Liste ansehen, zu der es im Navigationsbaum den Punkt \"Links\" gibt. Später soll es Kategorien geben.">Lesezeichen</a></li>
+          
+          <li><label class="tree-toggler nav-header">1.1 User Story</label>
+            <ul class="nav nav-list tree">
+              <li><a href="#">Ansicht eines Lesezeichens</a></li>
+              <li><label class="tree-toggler nav-header">1.1.1 Task</label>
+                <ul class="nav nav-list tree">
+                  <li><a href="#">TODO</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <li><label class="tree-toggler nav-header">1.2 User Story</label>
+            <ul class="nav nav-list tree">
+              <li><a href="#">Eintrag im Navigationsbaum</a></li>
+              <li><label class="tree-toggler nav-header">1.2.1 Task</label>
+                <ul class="nav nav-list tree">
+                  <li><a href="#">TODO</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <li><label class="tree-toggler nav-header">1.3 User Story</label>
+            <ul class="nav nav-list tree">
+              <li><a href="#">neues Lesezeichen</a></li>
+              <li><label class="tree-toggler nav-header">1.3.1 Task</label>
+                <ul class="nav nav-list tree">
+                  <li><a href="#">Darstellung</a></li>
+                </ul>
+              </li>
+              <li><label class="tree-toggler nav-header">1.3.2 Task</label>
+                <ul class="nav nav-list tree">
+                  <li><a href="#">Logik</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+
+      <li class="divider"></li>
+
+      <li><label class="tree-toggler nav-header">2 Requirement</label>
+        <ul class="nav nav-list tree">
+          <li><a href="#">In-App Chat</a></li>
+
+          <li><label class="tree-toggler nav-header">2.1 User Story</label>
+            <ul class="nav nav-list tree">
+              <li><a href="#">Liste der Teammitglieder</a></li>
+              <li><label class="tree-toggler nav-header">2.1.1 Task</label>
+                <ul class="nav nav-list tree">
+                  <li><a href="#">TODO</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <li><label class="tree-toggler nav-header">2.2 User Story</label>
+            <ul class="nav nav-list tree">
+              <li><a href="#">Links in Teamliste</a></li>
+              <li><label class="tree-toggler nav-header">2.2.1 Task</label>
+                <ul class="nav nav-list tree">
+                  <li><a href="#">TODO</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  
+</div>
+
+<script>
+$(document).ready(function () {
+    $('label.tree-toggler').parent().children('ul.tree').hide();
+    
+	$('label.tree-toggler').click(function () {
+		$(this).parent().children('ul.tree').toggle(100);
+	});
+    
+    $('.project-overview a').tooltip();
+});
+</script>

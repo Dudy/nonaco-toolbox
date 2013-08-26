@@ -1,0 +1,20 @@
+<li><label class="tree-toggler nav-header">{{task.id}} Task</label>
+    <ul class="nav nav-list tree">
+        <li><a href="#">{{task.title}}</a></li>
+    </ul>
+</li>
+
+<script>
+  $('.project-overview > ul > li > ul > li > ul > li > ul > li > a').click(function(e) {
+    e.preventDefault();
+    var id_text = $(this).parent().parent().parent().children('label').text();
+    var index = id_text.indexOf(' ');
+    id_text = id_text.substring(0, index);
+    url = '/project/task?urlsafe=' +
+          $(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().attr('data-urlsafe') +
+          '&id=' + id_text;
+    $.getJSON(url, function(result) {
+      $('#content').html(result.html);
+    });
+  });
+</script>

@@ -1,10 +1,10 @@
-﻿<div class="row-fluid">
+﻿<div class="row">
     <div class="span12">
         <h2>Tasks im Projekt {{project.title}}</h2>
     </div>
 </div>
 
-<div class="row-fluid">
+<div class="row">
     <div class="span12">
         <table class="table table-bordered table-striped">
             <thead>
@@ -16,16 +16,28 @@
                 </tr>
             </thead>
             
-            <tbody>
+            <tbody data-urlsafe="{{project.key.urlsafe()}}">
                 {% for task in tasks %}
                 <tr>
-                    <td>{{task.id}}</td>
+                    <td data-type="id">{{task.id}}</td>
                     <td>{{userstory_titles[task.key.id()]}}</td>
-                    <td>{{task.title}}</td>
-                    <td>{{task.content}}</td>
+                    <td data-type="title">{{task.title}}</td>
+                    <td data-type="content">{{task.content}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
+<script>
+  $('.table > tbody > tr').click(function(e) {
+    e.preventDefault();
+    url = '/project/task?urlsafe=' +
+      $(this).parent().attr('data-urlsafe') +
+      '&id=' + $(this).find('td[data-type="id"]').text();
+    $.getJSON(url, function(result) {
+      $('#content').html(result.html);
+    });
+  });
+</script>

@@ -1,10 +1,10 @@
-﻿<div class="row-fluid">
+﻿<div class="row">
     <div class="span12">
         <h2>User Stories im Projekt {{project.title}}</h2>
     </div>
 </div>
 
-<div class="row-fluid">
+<div class="row">
     <div class="span12">
         <table class="table table-bordered table-striped">
             <thead>
@@ -16,13 +16,13 @@
                 </tr>
             </thead>
             
-            <tbody>
+            <tbody data-urlsafe="{{project.key.urlsafe()}}">
                 {% for userstory in userstories %}
                 <tr>
-                    <td>{{userstory.id}}</td>
+                    <td data-type="id">{{userstory.id}}</td>
                     <td>{{requirement_titles[userstory.key.id()]}}</td>
-                    <td>{{userstory.title}}</td>
-                    <td>{{userstory.content}}</td>
+                    <td data-type="title">{{userstory.title}}</td>
+                    <td data-type="content">{{userstory.content}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -31,7 +31,13 @@
 </div>
 
 <script>
-$('.table > tbody > tr').click(function() {
-    alert('green');
-});
+  $('.table > tbody > tr').click(function(e) {
+    e.preventDefault();
+    url = '/project/userstory?urlsafe=' +
+      $(this).parent().attr('data-urlsafe') +
+      '&id=' + $(this).find('td[data-type="id"]').text();
+    $.getJSON(url, function(result) {
+      $('#content').html(result.html);
+    });
+  });
 </script>

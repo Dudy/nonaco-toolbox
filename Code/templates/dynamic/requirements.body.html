@@ -1,10 +1,10 @@
-﻿<div class="row-fluid">
+﻿<div class="row">
     <div class="span12">
         <h2>Requirements im Projekt {{project.title}}</h2>
     </div>
 </div>
 
-<div class="row-fluid">
+<div class="row">
     <div class="span12">
         <table class="table table-bordered table-striped">
             <thead>
@@ -23,19 +23,19 @@
                     <td data-type="content">{{requirement.content}}</td>
                 </tr>
                 {% endfor %}
-            <tbody>
+            </tbody>
         </table>
     </div>
 </div>
 
 <script>
-$('.table > tbody > tr').click(function() {
-    $(this).parent().attr('data-urlsafe');
+  $('.table > tbody > tr').click(function(e) {
+    e.preventDefault();
     url = '/project/requirement?urlsafe=' +
-        $(this).parent().attr('data-urlsafe') +
-        '&id=' + $(this).find('td[data-type="id"]').text();
+      $(this).parent().attr('data-urlsafe') +
+      '&id=' + $(this).find('td[data-type="id"]').text();
     $.getJSON(url, function(result) {
-        $('#content').html(result.html);
+      $('#content').html(result.html);
     });
-});
+  });
 </script>

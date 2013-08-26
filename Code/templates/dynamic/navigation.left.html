@@ -1,26 +1,26 @@
 ﻿<!-- Start linker Navigationsteil -->
-      <div class="col-lg-2 sidebar well" id="main-navigation" role="navigation">
-        <ul class="nav nav-pills nav-stacked">
-            <li class="nav-header">Allgemeines</li>
-            <li><a href="#" data-url="postings">Nachrichten</a></li>
-            <li><a href="#" data-url="calendar">Kalender</a></li>
-            <li><a href="#" data-url="team">Team</a></li>
-            <li><a href="#" data-url="links">Links</a></li>
-            
-            <li class="nav-header">Projekte</li>
-            {%- if username != None -%}
-                {%- if projects != None -%}
-                    {% for project in projects %}
-                        <li><a href="#" data-project-url="{{project.key.urlsafe()}}">{{project.title}}</a></li>
-                    {% endfor %}
-                {%- endif %}
-            {%- endif %}
-        </ul>
+      <div class="col-lg-2">
+        <div class="sidebar well" id="main-navigation" role="navigation">
+          <ul class="nav nav-pills nav-stacked">
+              <li class="nav-header">Allgemeines</li>
+              <li><a href="#" data-url="postings">Nachrichten</a></li>
+              <li><a href="#" data-url="calendar">Kalender</a></li>
+              <li><a href="#" data-url="team">Team</a></li>
+              <li><a href="#" data-url="links">Links</a></li>
+              
+              <li class="nav-header">Projekte</li>
+              {%- if username != None -%}
+                  {%- if projects != None -%}
+                      {% for project in projects %}
+                          <li><a href="#" data-url="project/overview?urlsafe=" data-navigation-url="project/navigation?urlsafe=" data-urlsafe="{{project.key.urlsafe()}}">{{project.title}}</a></li>
+                      {% endfor %}
+                  {%- endif %}
+              {%- endif %}
+          </ul>
+        </div>
+        
+        <div id="sub-navigation" role="navigation"></div>
       </div>
-
-      {% block second_sidebar %}
-      <div id="second-sidebar"></div>
-      {% endblock %}
       
       <script>
         $('#main-navigation > ul > li > a').click(function(e) {
@@ -34,12 +34,28 @@
           $('#main-navigation > ul > li').removeClass('active');
           $(this).parent().addClass('active');
           
+          /* gather some data to distinguish between common and project navigation */
+          var data_url = $(this).attr("data-url");
+          var data_navigation_url = $(this).attr("data-navigation-url");
+          var data_urlsafe = $(this).attr("data-urlsafe");
+          
           /* get new content and paste into page */
-          var url = '/' + $(this).attr("data-url");
-          var button = this;
+          var url = '/' + data_url + (data_urlsafe ? data_urlsafe : '');
           $.getJSON(url, function(result) {
               $('#content').html(result.content);
           });
+          
+          /* when project navigation is requested make it visible, otherwise hide it */
+          if (data_urlsafe) {
+            url = '/' + data_navigation_url + data_urlsafe;
+            $.getJSON(url, function(result) {
+              $('#sub-navigation').html(result.content);
+              $('.project-data-link').parent().removeClass('active');
+              $('#project-navigation > ul > li > a[data-url="overview"]').parent().addClass('active');
+            });
+          } else {
+            $('#project-navigation').remove();
+          }
         });
       </script>
 <!-- Ende linker Navigationsteil -->

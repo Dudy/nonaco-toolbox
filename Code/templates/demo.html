@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -33,7 +34,7 @@
           <a class="navbar-brand" href="#">Toolbox</a>
         </div>
         <div class="collapse navbar-collapse">
-          <p class="navbar-text pull-right">Logged in as <a href="#" class="navbar-link">test@example.com</a> (<a href="/_ah/login?continue=http%3A//localhost%3A12080/&amp;action=logout" class="navbar-link">Logout</a>)
+          <p class="navbar-text pull-right">Logged in as <a href="#" class="navbar-link">test@example.com</a> (<a href="/_ah/login?continue=http%3A//localhost%3A11080/&amp;action=logout" class="navbar-link">Logout</a>)
           </p>
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
@@ -44,37 +45,86 @@
       </div>
     </div>
 <!-- Ende oberer Navigationsteil -->
-﻿<!-- Start linker Navigationsteil -->
-      <div class="col-lg-2 sidebar well" id="navigation" role="navigation">
-        <ul class="nav nav-pills nav-stacked">
+    </div>
+
+    <div class="container">
+
+<!-- Start linker Navigationsteil -->
+      <div class="col-lg-2">
+        <div class="sidebar well" id="main-navigation" role="navigation">
+          <ul class="nav nav-pills nav-stacked">
             <li class="nav-header">Allgemeines</li>
-            <li id="nav_postings"><a href="/postings.html">Nachrichten</a></li>
-            <li id="nav_calendar"><a href="#">Kalender</a></li>
-            <li id="nav_team"><a href="#">Team</a></li>
-            <li id="nav_links"><a href="#">Links</a></li>
+            <li><a href="#" data-url="postings">Nachrichten</a></li>
+            <li><a href="#" data-url="calendar">Kalender</a></li>
+            <li><a href="#" data-url="team">Team</a></li>
+            <li><a href="#" data-url="links">Links</a></li>
             
             <li class="nav-header">Projekte</li>
-                        <li><a class="project-link" href="#" data-project-url="ahJkZXZ-bm9uYWNvLXRvb2xib3hyNAsSB1Byb2plY3QiE3Byb2plY3RfbGlzdF9kYl9rZXkMCxIHUHJvamVjdBiAgICAgMCfCAw">Notify.me</a></li>
-                    
-                        <li><a class="project-link" href="#" data-project-url="ahJkZXZ-bm9uYWNvLXRvb2xib3hyNAsSB1Byb2plY3QiE3Byb2plY3RfbGlzdF9kYl9rZXkMCxIHUHJvamVjdBiAgICAgMDfCAw">SourcecodeBroker</a></li>
-                    
-                        <li><a class="project-link" href="#" data-project-url="ahJkZXZ-bm9uYWNvLXRvb2xib3hyNAsSB1Byb2plY3QiE3Byb2plY3RfbGlzdF9kYl9rZXkMCxIHUHJvamVjdBiAgICAgMDvCAw">Toolbox</a></li>
-                    
-        </ul>
-      </div>
+            <li><a href="#" data-url="project/overview?urlsafe=" data-navigation-url="project/navigation?urlsafe=" data-urlsafe="ahJkZXZ-bm9uYWNvLXRvb2xib3hyNAsSB1Byb2plY3QiE3Byb2plY3RfbGlzdF9kYl9rZXkMCxIHUHJvamVjdBiAgICAgMCfCAw">Notify.me</a></li>
+            <li><a href="#" data-url="project/overview?urlsafe=" data-navigation-url="project/navigation?urlsafe=" data-urlsafe="ahJkZXZ-bm9uYWNvLXRvb2xib3hyNAsSB1Byb2plY3QiE3Byb2plY3RfbGlzdF9kYl9rZXkMCxIHUHJvamVjdBiAgICAgMDfCAw">SourcecodeBroker</a></li>
+            <li><a href="#" data-url="project/overview?urlsafe=" data-navigation-url="project/navigation?urlsafe=" data-urlsafe="ahJkZXZ-bm9uYWNvLXRvb2xib3hyNAsSB1Byb2plY3QiE3Byb2plY3RfbGlzdF9kYl9rZXkMCxIHUHJvamVjdBiAgICAgMDvCAw">Toolbox</a></li>
+          </ul>
+        </div>
 
+        <div class="sidebar well" id="project-navigation" role="navigation">
+          <ul class="nav nav-pills nav-stacked" data-url="ahJkZXZ-bm9uYWNvLXRvb2xib3hyNAsSB1Byb2plY3QiE3Byb2plY3RfbGlzdF9kYl9rZXkMCxIHUHJvamVjdBiAgICAgMDvCAw">
+            <li class="nav-header">Toolbox</li>
+            <li><a class="project-data-link" data-loading-text="lade..." data-url="overview">Komplettübersicht</a></li>
+            <li><a class="project-data-link" data-loading-text="lade..." data-url="requirements">Requirements</a></li>
+            <li><a class="project-data-link" data-loading-text="lade..." data-url="userstories">User Stories</a></li>
+            <li><a class="project-data-link" data-loading-text="lade..." data-url="tasks">Tasks</a></li>
+          </ul>
+        </div>
+      </div>
       
-      <div id="second-sidebar"></div>
+      <!-- <div class="col-lg-2 sidebar well" id="sub-navigation" role="navigation"></div> -->
       
+      <script>
+        $('#main-navigation > ul > li > a').click(function(e) {
+          /* stop link from redirecting normally */
+          e.preventDefault();
+          
+          /* some new content will eventually come */
+          $('#content').empty();
+          
+          /* set active caption on new link */
+          $('#main-navigation > ul > li').removeClass('active');
+          $(this).parent().addClass('active');
+          
+          /* gather some data to distinguish between common and project navigation */
+          var data_url = $(this).attr("data-url");
+          var data_navigation_url = $(this).attr("data-navigation-url");
+          var data_urlsafe = $(this).attr("data-urlsafe");
+          
+          /* get new content and paste into page */
+          var url = '/' + data_url + (data_urlsafe ? data_urlsafe : '');
+          $.getJSON(url, function(result) {
+              $('#content').html(result.content);
+          });
+          
+          /* when project navigation is requested make it visible, otherwise hide it */
+          if (data_urlsafe) {
+            url = '/' + data_navigation_url + data_urlsafe;
+            $.getJSON(url, function(result) {
+              $('#sub-navigation').html(result.content);
+            });
+          } else {
+            $('#project-navigation').remove();
+          }
+        });
+      </script>
 <!-- Ende linker Navigationsteil -->
+
       <div class="col-lg-8">
           
-          <h2>Willkommen.</h2>
+          <div id="content">
+            <h2>Willkommen.</h2>
+          </div>
           
 
       </div>
 
-﻿<!-- Start rechter Navigationsteil -->
+<!-- Start rechter Navigationsteil -->
       <div class="col-lg-2 sidebar well">
         <ul class="nav nav-pills nav-stacked">
           <li class="nav-header">Team</li>
@@ -94,11 +144,11 @@
 
       <hr>
 
-      <footer>
+    </div>
+    
+          <footer>
         <p>&copy; No Name Company (NoNaCo) 2013</p>
       </footer>
-
-    </div>
 
   </body>
 </html>

@@ -5,17 +5,23 @@
 }
 
 .well {
-    padding: 5px !important;
-    margin-bottom: 5px !important;
+    padding: 5px;
+    /*padding: 5px !important;*/
+    
+    
+    /*margin: auto -10px;*/
+    /*margin: 0 -15px !important;*/
+    /*margin: 0 -15px;*/
 }
 
 .post {
     padding: 5px;
-    margin-bottom: 5px;
+    margin: 5px 15px !important;
 }
 
 .container {
     max-width: 5000px !important;
+    margin: 10px -15px !important;
 }
 
 .nav-stacked > li.nav-header {
@@ -30,4 +36,12 @@
 
 .nav-stacked > li > a {
     padding: 3px 10px !important;
+}
+
+.alert {
+    padding: 6px 12px !important;
+}
+
+.page-header {
+    margin: 0 !important;
 }

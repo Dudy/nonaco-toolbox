@@ -10,31 +10,58 @@ from google.appengine.ext import ndb
 sys.path.append(os.path.join(os.path.dirname(__file__), '../model'))
 
 from task import Task
-from userstory import UserStory
+from task import Task
 from requirement import Requirement
 from project import Project
 
 class Handler_tasks(jinja_worker.Handler_jinja_worker):
-    def get(self, project_urlString):
+
+    def post(self):
         user = users.get_current_user()
         
         if user:
-            project_key = ndb.Key(urlsafe = project_urlString)
-            project = project_key.get()
-            requirements = Requirement.all(project.key)
+            ####################################################################################################################################################
+            #
+            # TODO: hier könnte man den Task in der DB checken, ob jemand anderes es schon bearbeitet hat, mit einem Hash oder einem last modified date
+            # oder wie im Wiki oder oder ... Für den Augenblick bleibt's ganz billig. Ich will die Daten eher bei Github im Bugtracker speichern.
             
-            userstory_titles = {}
-            tasks = []
-            for requirement in requirements:
-                userstories = UserStory.all(requirement.key)
-                for userstory in userstories:
-                    some_tasks = Task.all(userstory.key)
-                    for task in some_tasks:
-                        userstory_titles[task.key.id()] = userstory.title
-                    tasks += some_tasks
-
-            html_text = self.render_str("dynamic/tasks.body.html", project = project, userstory_titles = userstory_titles, tasks = tasks)
-            requirement_dict = { 'content': html_text }
-            self.response.write(json.dumps(requirement_dict))
+            id = id = self.request.get('id')
+            
+            tasks = Task.query(Task.id == id).fetch()
+            
+            if len(tasks) > 0:
+                # existing task
+                task = tasks[0]
+            else:
+                # new task
+                project_key = ndb.Key(urlsafe = self.request.get('urlsafe'))
+                task = Task(parent = project_key, id = id)
+            
+            task.author = user
+            task.title = self.request.get('title')
+            task.content = self.request.get('content')
+            
+            task.put()
+            dict = { 'success': True }
+            self.write(json.dumps(dict))
+            
+            #
+            ####################################################################################################################################################
+            
         else:
-            self.response.write('{ "message": "please log in" }')
+            dict = { 'success': False, 'message': 'not logged in' }
+            self.response.write(json.dumps(dict))
+
+    def delete(self):
+        pass
+
+
+
+
+
+
+
+
+
+
+

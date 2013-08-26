@@ -7,13 +7,13 @@ from google.appengine.ext import ndb
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../model'))
 
-#import model.project
 from task import Task
 from userstory import UserStory
 from requirement import Requirement
 from project import Project
 
 class Handler_project(jinja_worker.Handler_jinja_worker):
+
     def get(self, action = None):
         # TODO: besser machen, mit mehr if Abfragen und anderen else (nämlich dann nix machen)
         # außerdem könnte man doch wieder einzelne Controller machen, oder? Wobei ... jede Methode hat nur zehn Zeilen,
@@ -34,6 +34,10 @@ class Handler_project(jinja_worker.Handler_jinja_worker):
         # other handling
         elif action == "requirement":
             self.requirement(urlString, self.request.get('id', default_value = None))
+        elif action == "userstory":
+            self.userstory(urlString, self.request.get('id', default_value = None))
+        elif action == "task":
+            self.task(urlString, self.request.get('id', default_value = None))
         elif action == "navigation":
             self.navigation(urlString)
         else:
@@ -58,23 +62,14 @@ class Handler_project(jinja_worker.Handler_jinja_worker):
         user = users.get_current_user()
         
         if user:
+            self.set_autoescape(False)
             project_key = ndb.Key(urlsafe = project_urlString)
             project = project_key.get()
-            requirements = Requirement.all(project.key)
-            
-            userstory_titles = {}
-            tasks = []
-            for requirement in requirements:
-                userstories = UserStory.all(requirement.key)
-                for userstory in userstories:
-                    some_tasks = Task.all(userstory.key)
-                    for task in some_tasks:
-                        userstory_titles[task.key.id()] = userstory.title
-                    tasks += some_tasks
-            
-            html_text = self.render_str("dynamic/overview.body.html", project = project)
-            requirement_dict = { 'content': html_text }
+            requirements = self._get_requirements(project)
+            html = self.render_str("dynamic/overview.body.html", project = project, requirements = requirements)
+            requirement_dict = { 'content': html }
             self.response.write(json.dumps(requirement_dict))
+            self.set_autoescape(True)
         else:
             self.response.write('{ "message": "please log in" }')
     
@@ -85,8 +80,8 @@ class Handler_project(jinja_worker.Handler_jinja_worker):
             project_key = ndb.Key(urlsafe = project_urlString)
             project = project_key.get()
             requirements = Requirement.all(project.key)
-            html_text = self.render_str("dynamic/requirements.body.html", project = project, requirements = requirements)
-            requirement_dict = { 'content': html_text }
+            html = self.render_str("dynamic/requirements.body.html", project = project, requirements = requirements)
+            requirement_dict = { 'content': html }
             self.response.write(json.dumps(requirement_dict))
         else:
             self.response.write('{ "message": "please log in" }')
@@ -107,8 +102,8 @@ class Handler_project(jinja_worker.Handler_jinja_worker):
                     requirement_titles[userstory.key.id()] = requirement.title
                 userstories += some_userstories
 
-            html_text = self.render_str("dynamic/userstories.body.html", project = project, requirement_titles = requirement_titles, userstories = userstories)
-            requirement_dict = { 'content': html_text }
+            html = self.render_str("dynamic/userstories.body.html", project = project, requirement_titles = requirement_titles, userstories = userstories)
+            requirement_dict = { 'content': html }
             self.response.write(json.dumps(requirement_dict))
         else:
             self.response.write('{ "message": "please log in" }')
@@ -131,8 +126,8 @@ class Handler_project(jinja_worker.Handler_jinja_worker):
                         userstory_titles[task.key.id()] = userstory.title
                     tasks += some_tasks
 
-            html_text = self.render_str("dynamic/tasks.body.html", project = project, userstory_titles = userstory_titles, tasks = tasks)
-            requirement_dict = { 'content': html_text }
+            html = self.render_str("dynamic/tasks.body.html", project = project, userstory_titles = userstory_titles, tasks = tasks)
+            requirement_dict = { 'content': html }
             self.response.write(json.dumps(requirement_dict))
         else:
             self.response.write('{ "message": "please log in" }')
@@ -148,18 +143,70 @@ class Handler_project(jinja_worker.Handler_jinja_worker):
             
             if len(requirements) > 0:
                 requirement = requirements[0]
-                html_text = self.render_str("dynamic/requirement.body.html", project = project, requirement = requirement)
+                html = self.render_str("dynamic/requirement.body.html", project = project, requirement = requirement)
                 
-                requirement_dict = {
+                dict = {
                     'id': requirement.id,
                     'title': requirement.title,
                     'content': requirement.content,
-                    'html': html_text
+                    'html': html
                 }
                 
-                self.response.write(json.dumps(requirement_dict))
+                self.response.write(json.dumps(dict))
             else:
                 self.response.write('{ "message": "no requirement found with id ' + id + '" }')
+        else:
+            self.response.write('{ "message": "please log in" }')
+
+    def userstory(self, project_urlString, id):
+        user = users.get_current_user()
+        
+        if user:
+            project_key = ndb.Key(urlsafe = project_urlString)
+            project = project_key.get()
+            userstory_query = UserStory.query(UserStory.id == id, ancestor = project_key)
+            userstories = userstory_query.fetch(1)
+            
+            if len(userstories) > 0:
+                userstory = userstories[0]
+                html = self.render_str("dynamic/userstory.body.html", project = project, userstory = userstory)
+                
+                dict = {
+                    'id': userstory.id,
+                    'title': userstory.title,
+                    'content': userstory.content,
+                    'html': html
+                }
+                
+                self.response.write(json.dumps(dict))
+            else:
+                self.response.write('{ "message": "no userstory found with id ' + id + '" }')
+        else:
+            self.response.write('{ "message": "please log in" }')
+    
+    def task(self, project_urlString, id):
+        user = users.get_current_user()
+        
+        if user:
+            project_key = ndb.Key(urlsafe = project_urlString)
+            project = project_key.get()
+            task_query = Task.query(Task.id == id, ancestor = project_key)
+            tasks = task_query.fetch(1)
+            
+            if len(tasks) > 0:
+                task = tasks[0]
+                html = self.render_str("dynamic/task.body.html", project = project, task = task)
+                
+                dict = {
+                    'id': task.id,
+                    'title': task.title,
+                    'content': task.content,
+                    'html': html
+                }
+                
+                self.response.write(json.dumps(dict))
+            else:
+                self.response.write('{ "message": "no task found with id ' + id + '" }')
         else:
             self.response.write('{ "message": "please log in" }')
     
@@ -169,13 +216,48 @@ class Handler_project(jinja_worker.Handler_jinja_worker):
         if user:
             project_key = ndb.Key(urlsafe = project_urlString)
             project = project_key.get()
-            html_text = self.render_str("dynamic/project.data-navigation.html", project = project)
-            requirement_dict = { 'content': html_text }
+            html = self.render_str("dynamic/project.data-navigation.html", project = project)
+            requirement_dict = { 'content': html }
             self.response.write(json.dumps(requirement_dict))
 
+####################################################################################################
+    def _get_requirements(self, project):
+        user = users.get_current_user()
+        
+        if user:
+            html = ""
+            requirements = Requirement.all(project.key)
+            for requirement in requirements:
+                userstories = self._get_userstories(requirement)
+                html += self.render_str("dynamic/overview.requirement.html", requirement = requirement, userstories = userstories)
+            return html
+        else:
+            return None
 
+    def _get_userstories(self, requirement):
+        user = users.get_current_user()
+        
+        if user:
+            html = ""
+            userstories = UserStory.all(requirement.key)
+            for userstory in userstories:
+                tasks = self._get_tasks(userstory)
+                html += self.render_str("dynamic/overview.userstory.html", userstory = userstory, tasks = tasks)
+            return html
+        else:
+            return None
 
-
+    def _get_tasks(self, userstory):
+        user = users.get_current_user()
+        
+        if user:
+            html = ""
+            tasks = Task.all(userstory.key)
+            for task in tasks:
+                html += self.render_str("dynamic/overview.task.html", task = task)
+            return html
+        else:
+            return None
 
 
 
