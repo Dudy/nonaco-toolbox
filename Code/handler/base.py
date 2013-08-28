@@ -5,7 +5,7 @@ from google.appengine.api import users
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '../model'))
 
-import model.project
+from project import Project
 
 from jinja2 import Template
 
@@ -16,7 +16,7 @@ class Handler_base(jinja_worker.Handler_jinja_worker):
         if user:
             username = user.nickname()
             url = users.create_logout_url('/')
-            projects = model.project.get_projects()
+            projects = Project.all()
             navigation_top = self.render_str("dynamic/navigation.top.html", username = user.nickname(), url = users.create_logout_url('/'))
             navigation_left = self.render_str("dynamic/navigation.left.html", username = user.nickname(), projects = projects)
             navigation_right = self.render_str("dynamic/navigation.right.html")

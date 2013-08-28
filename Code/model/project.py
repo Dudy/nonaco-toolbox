@@ -2,11 +2,8 @@
 
 PROJECT_LIST_DB_KEY_NAME = 'project_list_db_key'
 
-def get_projects():
-    return Project.all()
-
 class Project(ndb.Model):
-    title = ndb.TextProperty(indexed = False, required = True)
+    title = ndb.TextProperty(indexed = True, required = True)
 
     @classmethod
     def project_db_key(self):
@@ -14,7 +11,7 @@ class Project(ndb.Model):
 
     @classmethod
     def all(self):
-        query = self.query(ancestor = self.project_db_key())
+        query = self.query(ancestor = self.project_db_key()).order(Project.title)
         projects = query.fetch()
         
         if len(projects) == 0:
