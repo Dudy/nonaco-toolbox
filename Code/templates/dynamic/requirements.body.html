@@ -15,25 +15,44 @@
                 </tr>
             </thead>
             
-            <tbody data-urlsafe="{{project.key.urlsafe()}}">
+            <tbody class="requirement-list">
                 {% for requirement in requirements %}
-                <tr>
+                <tr data-operation-type="edit" data-key-type="requirement" data-key="{{requirement.key.urlsafe()}}">
                     <td data-type="id">{{requirement.id}}</td>
                     <td data-type="title">{{requirement.title}}</td>
                     <td data-type="content">{{requirement.content}}</td>
                 </tr>
                 {% endfor %}
+                
+                <tr data-operation-type="create" data-key-type="project" data-key="{{project.key.urlsafe()}}">
+                  <td colspan="4">
+                    <label style="width: 100%" class="btn btn-primary" data-loading-text="lade...">neues Requirement für Projekt <b style="color: black; text-shadow: 0 0 10px white;">{{project.title}}</b></label>
+                  </td>
+                </tr>
             </tbody>
         </table>
+        
+        
     </div>
 </div>
 
 <script>
-  $('.table > tbody > tr').click(function(e) {
+  $('.requirement-list > tr').click(function(e) {
     e.preventDefault();
-    url = '/project/requirement?urlsafe=' +
-      $(this).parent().attr('data-urlsafe') +
-      '&id=' + $(this).find('td[data-type="id"]').text();
+    var url = '/project/requirement?' + $(this).attr('data-key-type') + '-key=' + $(this).attr('data-key') + '&operation=' + $(this).attr('data-operation-type');
+    $.getJSON(url, function(result) {
+      $('#content').html(result.html);
+    });
+  });
+  
+  $('.project-navigator a').click(function(e) {
+    e.preventDefault();
+    var data_container = $(this).parent().parent(),
+        type = $(this).attr('data-type'),
+        key_type = data_container.attr('data-type'),
+        key = data_container.attr('data-urlsafe'),
+        operation = $(this).attr('data-operation'),
+        url = '/project/' + type + '?' + key_type + '-key=' + key + '&operation=' + operation;
     $.getJSON(url, function(result) {
       $('#content').html(result.html);
     });

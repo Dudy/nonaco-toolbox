@@ -1,43 +1,65 @@
 ﻿<div class="row">
-    <div class="span12">
-        <h2>Tasks im Projekt {{project.title}}</h2>
-    </div>
+  <div class="span12">
+    <h2>Tasks im Projekt {{project.title}}</h2>
+  </div>
 </div>
 
 <div class="row">
-    <div class="span12">
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>User Story</th>
-                    <th>Titel</th>
-                    <th>Inhalt</th>
-                </tr>
-            </thead>
-            
-            <tbody data-urlsafe="{{project.key.urlsafe()}}">
-                {% for task in tasks %}
-                <tr>
-                    <td data-type="id">{{task.id}}</td>
-                    <td>{{userstory_titles[task.key.id()]}}</td>
-                    <td data-type="title">{{task.title}}</td>
-                    <td data-type="content">{{task.content}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+  <div class="span12">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Requirement</th>
+          <th>User Story</th>
+          <th>Titel</th>
+          <th>Inhalt</th>
+        </tr>
+      </thead>
+
+      <tbody class="task-list">
+        {% for requirement_container in requirement_container_list %}
+          {% for userstory_container in requirement_container.userstories %}
+            {% for task in userstory_container.tasks %}
+              <tr data-operation-type="edit" data-key-type="task" data-key="{{task.key.urlsafe()}}">
+                <td data-type="id">{{task.id}}</td>
+                <td style="font-weight:bold; color: black; text-shadow: 0 0 10px #3276b1;">{{requirement_container.requirement.title}}</td>
+                <td style="font-weight:bold; color: black; text-shadow: 0 0 10px #3276b1;">{{userstory_container.userstory.title}}</td>
+                <td data-type="title">{{task.title}}</td>
+                <td data-type="content">{{task.content}}</td>
+              </tr>
+            {% endfor %}
+
+            <tr data-operation-type="create" data-key-type="userstory" data-key="{{userstory_container.userstory.key.urlsafe()}}">          
+              <td colspan="5">
+                <label style="width: 100%" class="btn btn-primary" data-loading-text="lade...">neuer Task für User Story <b style="color: black; text-shadow: 0 0 10px white;">{{userstory_container.userstory.title}}</b></label>
+              </td>
+            </tr>
+          {% endfor %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <script>
-  $('.table > tbody > tr').click(function(e) {
+  $('.task-list > tr').click(function(e) {
     e.preventDefault();
-    url = '/project/task?urlsafe=' +
-      $(this).parent().attr('data-urlsafe') +
-      '&id=' + $(this).find('td[data-type="id"]').text();
+    var url = '/project/task?' + $(this).attr('data-key-type') + '-key=' + $(this).attr('data-key') + '&operation=' + $(this).attr('data-operation-type');
     $.getJSON(url, function(result) {
       $('#content').html(result.html);
     });
   });
 </script>
+
+
+
+
+
+
+
+
+
+
+
+

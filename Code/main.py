@@ -26,7 +26,8 @@ app = webapp2.WSGIApplication([
     ('/project/(.*)', projects.Handler_project),
     ('/new_post', postings.Handler_postings),
     ('/requirement/(.*)', requirement_handler.Handler_requirement),
-    #('/userstory/(.*)', userstory_handler.Handler_userstories),
+    ('/userstory/(.*)', userstory_handler.Handler_userstories),
+    ('/task/(.*)', task_handler.Handler_tasks),
     
     (r'/json/next_posts/(.*)', lazy_loader.Handler_lazy_loader),
     

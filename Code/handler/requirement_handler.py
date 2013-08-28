@@ -1,4 +1,4 @@
-﻿import json
+﻿import json, logging
 import jinja_worker
 import os, sys
 import datetime as dt
@@ -26,7 +26,7 @@ class Handler_requirement(jinja_worker.Handler_jinja_worker):
 #        else:
 #            self.response.write('{ "message": "please log in" }')
 
-    def post(self):
+    def post(self, id):
         user = users.get_current_user()
         
         if user:
@@ -45,8 +45,6 @@ class Handler_requirement(jinja_worker.Handler_jinja_worker):
             #
             # TODO: hier könnte man das Requirement in der DB checken, ob jemand anderes es schon bearbeitet hat, mit einem Hash oder einem last modified date
             # oder wie im Wiki oder oder ... Für den Augenblick bleibt's ganz billig. Ich will die Daten eher bei Github im Bugtracker speichern.
-            
-            id = id = self.request.get('id')
             
             requirements = Requirement.query(Requirement.id == id).fetch()
             

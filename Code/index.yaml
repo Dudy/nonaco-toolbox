@@ -43,7 +43,24 @@
   properties:
   - name: id
 
+- kind: Requirement
+  ancestor: yes
+  properties:
+  - name: id
+    direction: desc
+
 - kind: Task
+  ancestor: yes
+  properties:
+  - name: id
+
+- kind: Task
+  ancestor: yes
+  properties:
+  - name: id
+    direction: desc
+
+- kind: UserStory
   ancestor: yes
   properties:
   - name: id
@@ -52,3 +69,4 @@
   ancestor: yes
   properties:
   - name: id
+    direction: desc

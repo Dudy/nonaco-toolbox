@@ -1,13 +1,13 @@
 ﻿<h2>Task</h2>
 
-<form action="/task/{{task.id}}" data-urlsafe="{{project.key.urlsafe()}}" role="edit-task">
+<form action="/task/{{task.id}}" data-userstory-key="{{userstory_key}}" role="edit-task">
   <div class="form-group">
     <label for="id">ID</label>
-    <input name="id" type="text" class="form-control" placeholder="ID" value="{{task.id}}">
+    <input name="id" type="text" class="form-control" placeholder="ID" value="{{ task.id if task.id != None }}" disabled>
     <label for="title">Titel</label>
-    <input name="title" type="text" class="form-control" placeholder="Titel" value="{{task.title}}">
+    <input name="title" type="text" class="form-control" placeholder="Titel" value="{{ task.title if task.title != None }}">
     <label for="content">Inhalt</label>
-    <textarea name="content" class="form-control" rows="3" placeholder="Inhalt">{{task.content}}</textarea>
+    <textarea name="content" class="form-control" rows="3" placeholder="Inhalt">{{ task.content if task.content != None }}</textarea>
   </div>
   <div class="form-group">
     <button class="btn btn-primary">speichern</button>
@@ -29,7 +29,7 @@
         title = $title_field.val(),
         content = $content_field.val(),
         url = $form.attr('action'),
-        urlsafe = $form.attr('data-urlsafe');
+        urlsafe = $form.attr('data-userstory-key');
 
     /* don't allow empty posts */
     if (id.length > 0 && title.length > 0 && content.length > 0) {

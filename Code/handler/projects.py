@@ -1,4 +1,4 @@
-﻿import json
+﻿import json, logging
 import jinja_worker
 import os, sys
 
@@ -13,33 +13,36 @@ from requirement import Requirement
 from project import Project
 
 class Handler_project(jinja_worker.Handler_jinja_worker):
-
+    
     def get(self, action = None):
         # TODO: besser machen, mit mehr if Abfragen und anderen else (nämlich dann nix machen)
         # außerdem könnte man doch wieder einzelne Controller machen, oder? Wobei ... jede Methode hat nur zehn Zeilen,
         # die Klasse nur zwei Bildschirme, eigentlich kann man's auch so lassen
         
-        urlString = self.request.get('urlsafe', default_value = None)
+        urlsafe = self.request.get('urlsafe', default_value = None)
+        id = self.request.get('id', default_value = None)
         
         # project data handling
         if action == "overview":
-            self.overview(urlString)
+            self.overview(urlsafe)
         elif action == "requirements":
-            self.requirements(urlString)
+            self.requirements(urlsafe)
         elif action == "userstories":
-            self.userstories(urlString)
+            self.userstories(urlsafe)
         elif action == "tasks":
-            self.tasks(urlString)
+            self.tasks(urlsafe)
             
-        # other handling
+        # create or edit operations
         elif action == "requirement":
-            self.requirement(urlString, self.request.get('id', default_value = None))
+            self.requirement()
         elif action == "userstory":
-            self.userstory(urlString, self.request.get('id', default_value = None))
+            self.userstory()
         elif action == "task":
-            self.task(urlString, self.request.get('id', default_value = None))
+            self.task()
+        
+        # other handling
         elif action == "navigation":
-            self.navigation(urlString)
+            self.navigation(urlsafe)
         else:
             self.overview(action)
 
@@ -86,7 +89,8 @@ class Handler_project(jinja_worker.Handler_jinja_worker):
         else:
             self.response.write('{ "message": "please log in" }')
     
-    def userstories(self, project_urlString):
+    ''' deprecated '''
+    def userstories_old(self, project_urlString):
         user = users.get_current_user()
         
         if user:
@@ -108,7 +112,26 @@ class Handler_project(jinja_worker.Handler_jinja_worker):
         else:
             self.response.write('{ "message": "please log in" }')
     
-    def tasks(self, project_urlString):
+    def userstories(self, project_urlString):
+        user = users.get_current_user()
+        
+        if user:
+            project_key = ndb.Key(urlsafe = project_urlString)
+            project = project_key.get()
+            requirement_container_list = []
+            
+            for requirement in Requirement.all(project.key):
+                requirement_container_list.append(RequirementContainer(requirement = requirement, userstories = UserStory.all(requirement.key)))
+
+            html = self.render_str("dynamic/userstories.body.html", project = project, requirement_container_list = requirement_container_list)
+            dict = { 'content': html }
+        else:
+            dict = { "message": "please log in" }
+        
+        self.response.write(json.dumps(dict))
+    
+    ''' deprecated '''
+    def tasks_old(self, project_urlString):
         user = users.get_current_user()
         
         if user:
@@ -131,84 +154,120 @@ class Handler_project(jinja_worker.Handler_jinja_worker):
             self.response.write(json.dumps(requirement_dict))
         else:
             self.response.write('{ "message": "please log in" }')
-    
-    def requirement(self, project_urlString, id):
-        user = users.get_current_user()
-        
-        if user:
-            project_key = ndb.Key(urlsafe = project_urlString)
-            project = project_key.get()
-            requirement_query = Requirement.query(Requirement.id == id, ancestor = project_key)
-            requirements = requirement_query.fetch(1)
-            
-            if len(requirements) > 0:
-                requirement = requirements[0]
-                html = self.render_str("dynamic/requirement.body.html", project = project, requirement = requirement)
-                
-                dict = {
-                    'id': requirement.id,
-                    'title': requirement.title,
-                    'content': requirement.content,
-                    'html': html
-                }
-                
-                self.response.write(json.dumps(dict))
-            else:
-                self.response.write('{ "message": "no requirement found with id ' + id + '" }')
-        else:
-            self.response.write('{ "message": "please log in" }')
 
-    def userstory(self, project_urlString, id):
+    def tasks(self, project_urlString):
         user = users.get_current_user()
         
         if user:
             project_key = ndb.Key(urlsafe = project_urlString)
             project = project_key.get()
-            userstory_query = UserStory.query(UserStory.id == id, ancestor = project_key)
-            userstories = userstory_query.fetch(1)
+            requirement_container_list = []
             
-            if len(userstories) > 0:
-                userstory = userstories[0]
-                html = self.render_str("dynamic/userstory.body.html", project = project, userstory = userstory)
-                
-                dict = {
-                    'id': userstory.id,
-                    'title': userstory.title,
-                    'content': userstory.content,
-                    'html': html
-                }
-                
-                self.response.write(json.dumps(dict))
-            else:
-                self.response.write('{ "message": "no userstory found with id ' + id + '" }')
+            for requirement in Requirement.all(project.key):
+                requirement_container = RequirementContainer(requirement = requirement, userstories = [])
+                for userstory in UserStory.all(requirement.key):
+                    requirement_container.userstories.append(UserStoryContainer(userstory = userstory, tasks = Task.all(userstory.key)))
+                requirement_container_list.append(requirement_container)
+
+            html = self.render_str("dynamic/tasks.body.html", project = project, requirement_container_list = requirement_container_list)
+            dict = { 'content': html }
         else:
-            self.response.write('{ "message": "please log in" }')
-    
-    def task(self, project_urlString, id):
+            dict = { "message": "please log in" }
+        
+        self.response.write(json.dumps(dict))
+
+    def requirement(self):
         user = users.get_current_user()
         
         if user:
-            project_key = ndb.Key(urlsafe = project_urlString)
-            project = project_key.get()
-            task_query = Task.query(Task.id == id, ancestor = project_key)
-            tasks = task_query.fetch(1)
+            operation = self.request.get('operation', default_value = None)
             
-            if len(tasks) > 0:
-                task = tasks[0]
-                html = self.render_str("dynamic/task.body.html", project = project, task = task)
-                
-                dict = {
-                    'id': task.id,
-                    'title': task.title,
-                    'content': task.content,
-                    'html': html
-                }
-                
-                self.response.write(json.dumps(dict))
-            else:
-                self.response.write('{ "message": "no task found with id ' + id + '" }')
+            if operation == 'create':
+                project_key = ndb.Key(urlsafe = self.request.get('project-key'))
+                new_requirement_id = str(int(Requirement.max_id(project_key)) + 1)
+                requirement = Requirement(parent = project_key, author = user, id = new_requirement_id, title = None, content = None)
+            elif operation == 'edit':
+                requirement_key = ndb.Key(urlsafe = self.request.get('requirement-key'))
+                #project_key = requirement_key.parent()
+                requirement = requirement_key.get()
+            
+            #html = self.render_str("dynamic/requirement.body.html", project = project_key.get(), requirement = requirement)
+            html = self.render_str("dynamic/requirement.body.html", requirement = requirement)
+            dict = {
+                'id': requirement.id,
+                'title': requirement.title,
+                'content': requirement.content,
+                'html': html
+            }
         else:
-            self.response.write('{ "message": "please log in" }')
+            dict = { 'message': 'please log in' }
+        
+        self.response.write(json.dumps(dict))
+
+    def userstory(self):
+        user = users.get_current_user()
+        
+        if user:
+            operation = self.request.get('operation', default_value = None)
+            
+            if operation == 'create':
+                requirement_key = ndb.Key(urlsafe = self.request.get('requirement-key'))
+                project_key = requirement_key.parent()
+                max_id = UserStory.max_id(requirement_key)
+                index = max_id.rindex('.')
+                new_id = max_id[:index + 1] + str(int(max_id[index + 1:]) + 1)
+                userstory = UserStory(parent = project_key, author = user, id = new_id, title = None, content = None)
+            elif operation == 'edit':
+                userstory_key = ndb.Key(urlsafe = self.request.get('userstory-key'))
+                requirement_key = userstory_key.parent()
+                #project_key = requirement_key.parent()
+                userstory = userstory_key.get()
+            
+            #html = self.render_str("dynamic/userstory.body.html", project = project_key.get(),userstory = userstory)
+            html = self.render_str("dynamic/userstory.body.html", requirement_key = requirement_key.urlsafe(), userstory = userstory)
+            dict = {
+                'id': userstory.id,
+                'title': userstory.title,
+                'content': userstory.content,
+                'html': html
+            }
+        else:
+            dict = { 'message': 'please log in' }
+        
+        self.response.write(json.dumps(dict))
+
+    def task(self):
+        user = users.get_current_user()
+        
+        if user:
+            operation = self.request.get('operation', default_value = None)
+            
+            if operation == 'create':
+                userstory_key = ndb.Key(urlsafe = self.request.get('userstory-key'))
+                max_id = Task.max_id(userstory_key)
+                index = max_id.rindex('.')
+                new_id = max_id[:index + 1] + str(int(max_id[index + 1:]) + 1)
+                task = Task(parent = userstory_key, author = user, id = new_id, title = None, content = None)
+            elif operation == 'edit':
+                task_key = ndb.Key(urlsafe = self.request.get('task-key'))
+                userstory_key = task_key.parent()
+                userstory = userstory_key.get()
+                task = task_key.get()
+            
+            #requirement_key = userstory_key.parent()
+            #project_key = requirement_key.parent()
+            #html = self.render_str("dynamic/task.body.html", project = project_key.get(),task = task)
+            html = self.render_str("dynamic/task.body.html", userstory_key = userstory_key.urlsafe(), task = task)
+            dict = {
+                'id': task.id,
+                'title': task.title,
+                'content': task.content,
+                'html': html
+            }
+        else:
+            dict = { 'message': 'please log in' }
+        
+        self.response.write(json.dumps(dict))
     
     def navigation(self, project_urlString):
         user = users.get_current_user()
@@ -263,10 +322,21 @@ class Handler_project(jinja_worker.Handler_jinja_worker):
 
 
 
+class RequirementContainer:
+    requirement = None
+    userstories = []
 
+    def __init__(self, requirement, userstories):
+        self.requirement = requirement
+        self.userstories = userstories
 
+class UserStoryContainer:
+    userstory = None
+    tasks = []
 
-
+    def __init__(self, userstory, tasks):
+        self.userstory = userstory
+        self.tasks = tasks
 
 
 

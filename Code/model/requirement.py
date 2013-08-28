@@ -28,3 +28,12 @@ class Requirement(ndb.Model):
             return requirements
         else:
             return None
+
+    @classmethod
+    def max_id(self, project_key):
+        requirement = self.query(ancestor = project_key).order(-Requirement.id).fetch(1)
+        if requirement:
+            id = requirement[0].id
+        else:
+            id = '1'
+        return id

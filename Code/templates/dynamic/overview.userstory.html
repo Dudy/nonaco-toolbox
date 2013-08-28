@@ -1,21 +1,7 @@
 <li><label class="tree-toggler nav-header">{{userstory.id}} User Story</label>
-  <ul class="nav nav-list tree">
-    <li><a href="#">{{userstory.title}}</a></li>
+  <ul class="nav nav-list tree overview-userstory" data-type="userstory" data-urlsafe="{{userstory.key.urlsafe()}}">
+    <li><a href="#" data-type="userstory" data-operation="edit">{{userstory.title}}</a></li>
 {{tasks}}
+    <li><a href="#" data-type="task" data-operation="create">neuen Task erstellen</a></li>
   </ul>
 </li>
-
-<script>
-  $('.project-overview > ul > li > ul > li > ul > li > a').click(function(e) {
-    e.preventDefault();
-    var id_text = $(this).parent().parent().parent().children('label').text();
-    var index = id_text.indexOf(' ');
-    id_text = id_text.substring(0, index);
-    url = '/project/userstory?urlsafe=' +
-          $(this).parent().parent().parent().parent().parent().parent().parent().attr('data-urlsafe') +
-          '&id=' + id_text;
-    $.getJSON(url, function(result) {
-      $('#content').html(result.html);
-    });
-  });
-</script>

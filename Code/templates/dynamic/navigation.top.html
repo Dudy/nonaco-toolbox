@@ -1,5 +1,5 @@
 ﻿<!-- Start oberer Navigationsteil -->
-    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+    <div class="navbar navbar-fixed-top navbar-inverse" id="top-navigation" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -12,9 +12,9 @@
         <div class="collapse navbar-collapse">
           <p class="navbar-text pull-right">
             {%- if username != None -%}
-            Logged in as <a href="#" class="navbar-link">{{username}}</a> (<a href="{{url}}" class="navbar-link">Logout</a>)
+            Logged in as <a href="#" class="navbar-link" id="logout-link">{{username}}</a> (<a href="{{url}}" class="navbar-link">Logout</a>)
             {%- else %}
-            <a href="{{url}}" class="navbar-link">Login</a>
+            <a href="{{url}}" class="navbar-link" id="login-link">Login</a>
             {%- endif %}
           </p>
           <ul class="nav navbar-nav">

@@ -5,7 +5,7 @@
 </style>
 
 <div class="sidebar well" id="project-navigation" role="navigation">
-  <ul class="nav nav-pills nav-stacked" data-url="{{project.key.urlsafe()}}">
+  <ul class="nav nav-pills nav-stacked" id="project-urlsafe" data-project-urlsafe="{{project.key.urlsafe()}}">
       <li class="nav-header">{{project.title}}</li>
       <li><a class="project-data-link" data-loading-text="lade..." data-url="overview">Komplettübersicht</a></li>
       <li><a class="project-data-link" data-loading-text="lade..." data-url="requirements">Requirements</a></li>
@@ -15,6 +15,10 @@
 </div>
 
 <script>
+    var getProjectUrlsafe = function() {
+      return $('#project-urlsafe').attr('data-project-urlsafe');
+    };
+    
     $('.project-data-link').click(function(e) {
         e.preventDefault();
         
@@ -23,9 +27,7 @@
         
         $('#content').empty();
         
-        var url =
-            '/project/' + $(this).attr('data-url') + '?urlsafe=' +
-            $(this).parent().parent().attr('data-url');
+        var url = '/project/' + $(this).attr('data-url') + '?urlsafe=' + getProjectUrlsafe();
         
         $.getJSON(url, function(result) {
             $('#content').html(result.content);

@@ -5,20 +5,33 @@
 </div>
 
 <div class="container">
-  <div class="row well project-overview" data-urlsafe="{{project.key.urlsafe()}}">
-    <ul class="nav nav-list">
+  <div class="row well project-overview">
+    <ul class="nav nav-list" data-type="project" data-urlsafe="{{project.key.urlsafe()}}">
 {{requirements}}
+      <li><a href="#" data-type="requirement" data-operation="create">neues Requirement erstellen</a></li>
     </ul>
   </div>
-  
 </div>
 
 <script>
-$(document).ready(function () {
-  $('label.tree-toggler').parent().children('ul.tree').hide();
-  $('label.tree-toggler').click(function () {
-    $(this).parent().children('ul.tree').toggle(100);
+  $(document).ready(function () {
+    $('label.tree-toggler').parent().children('ul.tree').hide();
+    $('label.tree-toggler').click(function () {
+      $(this).parent().children('ul.tree').toggle(100);
+    });
+    $('.project-overview a').tooltip();
   });
-  $('.project-overview a').tooltip();
-});
+
+  $('.project-overview a').click(function(e) {
+    e.preventDefault();
+    var data_container = $(this).parent().parent(),
+        type = $(this).attr('data-type'),
+        key_type = data_container.attr('data-type'),
+        key = data_container.attr('data-urlsafe'),
+        operation = $(this).attr('data-operation'),
+        url = '/project/' + type + '?' + key_type + '-key=' + key + '&operation=' + operation;
+    $.getJSON(url, function(result) {
+      $('#content').html(result.html);
+    });
+  });
 </script>

@@ -1,6 +1,4 @@
-﻿import logging
-
-from google.appengine.api import users
+﻿from google.appengine.api import users
 from google.appengine.ext import ndb
 
 class UserStory(ndb.Model):
@@ -39,3 +37,29 @@ class UserStory(ndb.Model):
             return userstories
         else:
             return None
+
+    @classmethod
+    def max_id(self, requirement_key):
+        userstory = self.query(ancestor = requirement_key).order(-UserStory.id).fetch(1)
+        if userstory:
+            id = userstory[0].id
+        else:
+            id = requirement_key.get().id + '.0' # this mimics "no entries"
+        return id
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

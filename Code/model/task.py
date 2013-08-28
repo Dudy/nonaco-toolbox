@@ -46,3 +46,24 @@ class Task(ndb.Model):
             return tasks
         else:
             return None
+
+    @classmethod
+    def max_id(self, userstory_key):
+        task = self.query(ancestor = userstory_key).order(-Task.id).fetch(1)
+        if task:
+            id = task[0].id
+        else:
+            id = userstory_key.get().id + '.0' # this mimics "no entries"
+        return id
+
+
+
+
+
+
+
+
+
+
+
+
